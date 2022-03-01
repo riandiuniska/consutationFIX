@@ -11,7 +11,7 @@ class Chats {
 
     public function __construct()
     {
-        require_once("./DbConnect.php");
+        require_once("DbConnect.php");
         $db = new DbConnect;
         $this->db_conn = $db->connect();
     }

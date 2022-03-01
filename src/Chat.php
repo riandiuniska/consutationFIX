@@ -1,9 +1,12 @@
 <?php
 namespace MyApp;
+
+use Chats;
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
 
 require dirname(__DIR__) . "/db/Users.php";
+require dirname(__DIR__) . "/db/Chats.php";
 
 class Chat implements MessageComponentInterface {
     protected $clients;
@@ -26,14 +29,20 @@ class Chat implements MessageComponentInterface {
             , $from->resourceId, $msg, $numRecv, $numRecv == 1 ? '' : 's');
 
         $data = json_decode($msg, true);
-        $objUser = new \Users;
-        $objUser->setId($data['user_id']);
-        $user = $objUser->getUserById();
-        // $data['from'] = $user['name'];
-        $data['msg'] = $data['msg'];
         date_default_timezone_set('Asia/Jakarta');
-        $data['dt'] =  date("d-m-Y h:i:s");
-
+        
+        $objChat =  new \Chats;
+        $objChat->setUserId($data['user_id']);
+        $objChat->setMessage($data['msg']);
+        $objChat->setCreatedAt(date("Y-m-d h:i:s"));
+        if($objChat->saveChat()) {
+            $objUser = new \Users;
+            $objUser->setId($data['user_id']);
+            $user = $objUser->getUserById();
+            // $data['from'] = $user['name'];
+            $data['msg'] = $data['msg'];
+            $data['dt'] =  date("d-m-Y h:i:s");
+        }
 
         foreach ($this->clients as $client) {
             // if ($from !== $client) {

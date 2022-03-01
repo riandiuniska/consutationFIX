@@ -110,6 +110,8 @@ $users = $obj->getAllUser();
                     msg: msg
                 };
                 conn.send(JSON.stringify(data));
+
+                $("#message").val("");
             })
         })
     </script>
