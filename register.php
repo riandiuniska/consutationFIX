@@ -1,3 +1,18 @@
+<?php 
+
+require "db/Users.php";
+
+if(isset($_POST['register'])) {
+
+    $objUser = new Users;
+    $regisMessage = $objUser->registerNewUser($_POST);
+    var_dump($regisMessage);
+
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
