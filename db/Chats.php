@@ -48,4 +48,17 @@ class Chats {
         return $this->created_at = $created_at;
     }
 
+    public function saveChat() {
+        $statement = $this->db_conn->prepare('INSERT INTO chats VALUES(null, :user_id, :message, :created_at)');
+        $statement->bindParam(":user_id", $this->user_id);
+        $statement->bindParam(":message", $this->message);
+        $statement->bindParam(":created_at", $this->created_at);
+
+        if($statement->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }
