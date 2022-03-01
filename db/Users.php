@@ -141,16 +141,6 @@
             return $userData;
         }
 
-        public function emailExists() {
-            $statement = $this->db_conn->prepare("SELECT * FROM users WHERE email = :email");
-            $statement->bindParam(":email", $this->email);
-            $statement->execute();
-
-            $userData = $statement->fetch(PDO::FETCH_ASSOC);
-
-            return $userData;
-        }
-
         public function registerNewUser($data) {
 
             $msg = "";
@@ -190,11 +180,11 @@
 
             $this->setName($data['name']);
             $this->setEmail($data['email']);
-            $this->setPassword($data['password']);
+            $this->setPassword(password_hash($data['password'], PASSWORD_BCRYPT));
             $this->setLoginStatus(1);
             $this->setLastLogin(date("Y-m-d H:i:s"));
 
-            if($this->emailExists() > 0) {
+            if($this->getUserByEmail() > 0) {
                 $msg = "Email {$data['email']} already used";
                 goto out;
             }
@@ -205,6 +195,51 @@
             } else {
                 $msg = "Registration Failed!";
             }
+
+            out : {
+                return [
+                    "is_ok" => $is_ok,
+                    "msg" => $msg
+                ];
+            }
+        }
+
+        public function loginUser($data) {
+
+            $msg = "";
+            $is_ok = false;
+
+            if(!isset($data['email']) || !is_string($data['email'])) {
+                $msg = "Missing email string!";
+                goto out;
+            }
+
+            if(!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+                $msg = "Email is not valid! ";
+                goto out;
+            }
+
+            if(!isset($data['password']) || !is_string($data['password'])) {
+                $msg = "Missing password string!";
+                goto out;
+            }
+
+            $this->setEmail($data['email']);
+            $this->setPassword($data['password']);
+
+            $usersData = $this->getUserByEmail();
+
+            if($usersData < 1) {
+                $msg = "Account not found!";
+                goto out;
+            }
+
+            if(password_verify($this->getPassword(), $usersData['password'])){
+                $msg = "Login success";
+                $is_ok = true;
+            } else {
+                $msg = "Login failed!";
+            }         
 
             out : {
                 return [

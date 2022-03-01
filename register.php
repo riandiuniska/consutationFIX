@@ -5,8 +5,12 @@ require "db/Users.php";
 if(isset($_POST['register'])) {
 
     $objUser = new Users;
-    $regisMessage = $objUser->registerNewUser($_POST);
-    var_dump($regisMessage);
+    $regisResponse = $objUser->registerNewUser($_POST);
+    if($regisResponse['is_ok']) {
+        echo $regisResponse['msg'];
+    } else {
+        echo $regisResponse['msg'];
+    }
 
 }
 

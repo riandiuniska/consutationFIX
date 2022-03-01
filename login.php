@@ -1,3 +1,20 @@
+<?php 
+
+require "./db/Users.php";
+
+if(isset($_POST['login'])) {
+    $objUser = new Users;
+    $loginResponse = $objUser->loginUser($_POST);
+    if($loginResponse['is_ok']) {
+        echo $loginResponse['msg'];
+    } else {
+        echo $loginResponse['msg'];
+    }
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
