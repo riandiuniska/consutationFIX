@@ -1,7 +1,12 @@
 <?php 
-session_start();
 
 require("db/Users.php");
+session_start();
+
+if(!isset($_SESSION['user'])){
+    header("location: login.php");
+}
+
 $obj = new Users;
 $users = $obj->getAllUser();
 

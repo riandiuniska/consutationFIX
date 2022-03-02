@@ -2,13 +2,21 @@
 
 require "./db/Users.php";
 
+if(isset($_SESSION['user'])) {
+    header("location: chatroom.php");
+}
+
+session_start();
+
 if(isset($_POST['login'])) {
     $objUser = new Users;
     $loginResponse = $objUser->loginUser($_POST);
     if($loginResponse['is_ok']) {
-        echo $loginResponse['msg'];
+        echo "<script>alert('" . $loginResponse['msg'] . "')</script>";
+        $_SESSION['user'] = $_POST['email'];
+        header("location: chatroom.php");
     } else {
-        echo $loginResponse['msg'];
+        echo "<script>alert('" . $loginResponse['msg'] . "')</script>";
     }
 }
 

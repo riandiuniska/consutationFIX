@@ -238,7 +238,7 @@
                 $msg = "Login success";
                 $is_ok = true;
             } else {
-                $msg = "Login failed!";
+                $msg = "Login failed, password incorrect!";
             }         
 
             out : {
