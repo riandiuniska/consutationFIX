@@ -12,9 +12,14 @@ if(isset($_POST['login'])) {
     $objUser = new Users;
     $loginResponse = $objUser->loginUser($_POST);
     if($loginResponse['is_ok']) {
-        echo "<script>alert('" . $loginResponse['msg'] . "')</script>";
+       
         $_SESSION['user'] = $_POST['email'];
-        header("location: chatroom.php");
+        echo "
+        <script>
+            alert('" . $loginResponse['msg'] . "');
+            location.replace('chatroom.php');
+        </script>";
+
     } else {
         echo "<script>alert('" . $loginResponse['msg'] . "')</script>";
     }

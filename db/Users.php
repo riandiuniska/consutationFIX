@@ -117,7 +117,7 @@
         }
 
         public function updateLoginStatus() {
-            $statement = $this->db_conn->prepare("UPDATE users SET login_status = :login_status, last_login = :last_Login WHERE id = :id");
+            $statement = $this->db_conn->prepare("UPDATE users SET login_status = :login_status, last_login = :last_login WHERE user_id = :id");
             $statement->bindParam(":login_status", $this->login_status);
             $statement->bindParam(":last_login", $this->last_login);
             $statement->bindParam(":id", $this->id);
@@ -181,8 +181,8 @@
             $this->setName($data['name']);
             $this->setEmail($data['email']);
             $this->setPassword(password_hash($data['password'], PASSWORD_BCRYPT));
-            $this->setLoginStatus(1);
-            $this->setLastLogin(date("Y-m-d H:i:s"));
+            $this->setLoginStatus(0);
+            $this->setLastLogin("");
 
             if($this->getUserByEmail() > 0) {
                 $msg = "Email {$data['email']} already used";
@@ -235,6 +235,16 @@
             }
 
             if(password_verify($this->getPassword(), $usersData['password'])){
+
+                date_default_timezone_set('Asia/Jakarta');
+                $this->setLoginStatus(1);
+                $this->setLastLogin(date("Y-m-d H:i:s"));
+                $this->setEmail($_POST['email']);
+                $userData = $this->getUserByEmail();
+                $userId = $userData['user_id'];
+                $this->setId($userId);
+                $this->updateLoginStatus();
+
                 $msg = "Login success";
                 $is_ok = true;
             } else {
