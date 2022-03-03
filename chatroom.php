@@ -1,6 +1,7 @@
-<?php 
+<?php
 
 require("db/Users.php");
+require("db/Chats.php");
 session_start();
 
 if(!isset($_SESSION['user'])){
@@ -27,6 +28,11 @@ $users = $obj->getAllUser();
     <div class="w-10/12 mx-auto flex flex-col items-center py-10 gap-y-4">
         <h1 class="text-center text-4xl font-semibold">Chat Room</h1>
         <p class="text-center font-lg mt-10">Daftar User</p>
+        <?php 
+            $obj->setEmail($_SESSION['user']);
+            $user = $obj->getUserByEmail();
+            echo "<input type='hidden' name='userId' id='userId' value='" . $user['user_id'] . "'>"; 
+        ?>
         <table class="border mx-auto">
             <thead>
                 <th>Name</th>
@@ -48,7 +54,6 @@ $users = $obj->getAllUser();
                 ?>
                             <tr>
                                 <?php
-                                    echo "<input type='hidden' name='userId' id='userId' value='" . $users['user_id'] . "'>";
                                     echo "<td>" . $users['name'] . "</td>";
                                     // echo "<td>" . $users['email'] . "</td>"; 
                                     echo "<td>" . $users['last_login'] . "</td>";
@@ -70,6 +75,34 @@ $users = $obj->getAllUser();
                 <div class="bg-yellow-200 rounded-lg px-4 py-2 max-w-fit mx-auto">
                     <p>Mohon gunakan bahasa yang sopan!</p>
                 </div>
+                <?php 
+
+                    $chats = new Chats;
+                    $chat = $chats->getAllChat();
+
+                    foreach($chat as $key => $chat) {
+
+                        $objUser = new Users;
+                        $objUser->setEmail($_SESSION['user']);
+                        $userData = $objUser->getUserByEmail();
+                        $userId = $userData['user_id'];
+
+                        $styleBox = '';
+
+                        if($chat['user_id'] == $userId) {
+                            $styleBox = 'bg-red-200 text-right ml-auto';
+                            $chat['name'] = "Me";
+                        } else {
+                            $styleBox = 'bg-green-200 text-left';
+                        }
+
+                        echo '<div class="max-w-fit ' . $styleBox . ' rounded-xl px-4 py-2 ..."><small class="font-semibold">' . $chat['name'] . 
+                        '</small><p class="">' . $chat['message'] . 
+                        '</p><p class="text-right text-xs text-gray-400 ">' . $chat['created_at'] . 
+                        '</p></div>';
+                    }
+                
+                ?>
             </div>
             <form class="w-8/12 mx-auto flex" action="" method="POST">
                 <input class="px-2 py-1 flex-1 border border-gray-400 outline-none" type="text" name="message" id="message" placeholder="Enter messages...">

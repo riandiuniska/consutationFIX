@@ -61,4 +61,12 @@ class Chats {
         }
     }
 
+    public function getAllChat() {
+        $statement = $this->db_conn->prepare("SELECT * FROM chats INNER JOIN users ON chats.user_id = users.user_id");
+        $statement->execute();
+        $chatsData = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return $chatsData;
+    }
+
 }
