@@ -11,7 +11,6 @@ $obj = new Users;
 $users = $obj->getAllUser();
 
 
-
 ?>
 
 <!DOCTYPE html>
@@ -31,7 +30,7 @@ $users = $obj->getAllUser();
         <table class="border mx-auto">
             <thead>
                 <th>Name</th>
-                <th>Email</th>
+                <!-- <th>Email</th> -->
                 <th>Last Login</th>
                 <th>Status</th>
             </thead>
@@ -45,13 +44,13 @@ $users = $obj->getAllUser();
                         } else {
                             $loginStatus = "Offline";
                         }
-                        if(!isset($_SESSION['user'][$users['user_id']])) {
+                        if($users['email'] !== $_SESSION['user']) {
                 ?>
                             <tr>
                                 <?php
                                     echo "<input type='hidden' name='userId' id='userId' value='" . $users['user_id'] . "'>";
                                     echo "<td>" . $users['name'] . "</td>";
-                                    echo "<td>" . $users['email'] . "</td>"; 
+                                    // echo "<td>" . $users['email'] . "</td>"; 
                                     echo "<td>" . $users['last_login'] . "</td>";
                                     echo "<td>" . $loginStatus . "</td>";
                                 ?>
