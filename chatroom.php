@@ -24,7 +24,7 @@ $users = $obj->getAllUser();
     <script src="https://code.jquery.com/jquery-3.6.0.slim.js" integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY=" crossorigin="anonymous"></script>
 </head>
 <body>
-    <div class="w-10/12 mx-auto">
+    <div class="w-10/12 mx-auto flex flex-col items-center py-10 gap-y-4">
         <h1 class="text-center text-4xl font-semibold">Chat Room</h1>
         <p class="text-center font-lg mt-10">Daftar User</p>
         <table class="border mx-auto">
@@ -63,7 +63,9 @@ $users = $obj->getAllUser();
             </tbody>
         </table>
 
-        <div class="">
+        <a class="bg-red-500 px-4 py-1 text-white rounded-lg mx-auto" href="logout.php">Logout</a>
+
+        <div class="w-full">
             <div class="bg-gray-200 w-8/12 h-[400px] mx-auto mt-10 p-4 flex flex-col gap-y-2 overflow-y-scroll" id="chat-container">
                 <div class="bg-yellow-200 rounded-lg px-4 py-2 max-w-fit mx-auto">
                     <p>Mohon gunakan bahasa yang sopan!</p>
