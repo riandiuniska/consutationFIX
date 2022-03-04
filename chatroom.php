@@ -22,7 +22,16 @@ $users = $obj->getAllUser();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat Room Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.slim.js" integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+    <script>
+        $(document).ready(function() {
+            setInterval(function() {
+                $("#list_users").load(window.location.href + " #list_users");
+            }, 1000)
+        })
+    </script>
+
 </head>
 <body>
     <div class="w-10/12 mx-auto flex flex-col items-center py-10 gap-y-4">
@@ -33,7 +42,7 @@ $users = $obj->getAllUser();
             $user = $obj->getUserByEmail();
             echo "<input type='hidden' name='userId' id='userId' value='" . $user['user_id'] . "'>"; 
         ?>
-        <table class="border mx-auto">
+        <table id="list_users" class="border mx-auto">
             <thead>
                 <th>Name</th>
                 <!-- <th>Email</th> -->
