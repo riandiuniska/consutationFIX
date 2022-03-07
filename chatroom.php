@@ -34,7 +34,7 @@ $users = $obj->getAllUser();
 
 </head>
 <body>
-    <div class="w-10/12 mx-auto flex flex-col items-center py-10 gap-y-4">
+    <div class="w-full sm:w-10/12 md:w-10/12 mx-auto flex flex-col items-center py-10 gap-y-4">
         <h1 class="text-center text-4xl font-semibold">Chat Room</h1>
         <p class="text-center font-lg mt-10">Daftar User</p>
         <?php 
@@ -82,7 +82,7 @@ $users = $obj->getAllUser();
         <div class="w-full">
             <div class="bg-gray-200 w-8/12 h-[400px] mx-auto mt-10 p-4 flex flex-col gap-y-2 overflow-y-scroll" id="chat-container">
                 <div class="bg-yellow-200 rounded-lg px-4 py-2 max-w-fit mx-auto">
-                    <p>Mohon gunakan bahasa yang sopan!</p>
+                    <p class="text-center">Mohon gunakan bahasa yang sopan!</p>
                 </div>
                 <?php 
 
@@ -115,7 +115,7 @@ $users = $obj->getAllUser();
             </div>
             <form class="w-8/12 mx-auto flex" action="" method="POST">
                 <input class="px-2 py-1 flex-1 border border-gray-400 outline-none" type="text" name="message" id="message" placeholder="Enter messages...">
-                <button class="px-4 py-1 bg-blue-500 text-white" type="submit" name="send" id="send">Kirim</button>
+                <button class="w-[80px] bg-blue-500 text-white" type="submit" name="send" id="send">Kirim</button>
             </form>
         </div>
     </div>
