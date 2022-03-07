@@ -77,7 +77,10 @@ $users = $obj->getAllUser();
             </tbody>
         </table>
 
-        <a class="bg-red-500 px-4 py-1 text-white rounded-lg mx-auto" href="logout.php">Logout</a>
+        <div class="flex items-center mx-auto space-x-4">
+            <a class="bg-red-500 px-4 py-1 text-white rounded-lg" href="logout.php">Logout</a>
+            <a class="bg-green-500 px-4 py-1 text-white rounded-lg" href="private_chat.php" >Private Chat</a>
+        </div>
 
         <div class="w-full">
             <div class="bg-gray-200 w-8/12 h-[400px] mx-auto mt-10 p-4 flex flex-col gap-y-2 overflow-y-scroll" id="chat-container">
