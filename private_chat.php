@@ -1,6 +1,7 @@
 <?php
 
 session_start();
+require "./db/Users.php";
 
 if(!isset($_SESSION['user'])) {
     header("location: login.php");
@@ -29,26 +30,36 @@ if(!isset($_SESSION['user'])) {
             <hr class="border border-gray-200 my-4 mx-2">
             <div class="px-2 overflow-scroll-y">
                 <!-- Contact -->
-                <div>
-                    <div class="flex items-center space-x-4 bg-gray-200 h-[80px] px-2 cursor-pointer border-b-2">
-                        <img class="w-[50px] h-[50px] rounded-full" src="./img/dummy/people.jpg" alt="Profile Image">
-                        <div class="flex flex-col">
-                            <span class="font-semibold">Ilham Muttaqien</span>
-                            <small class="text-sm">Online</small>
+                <?php 
+                    $objUser = new Users;
+                    $users = $objUser->getAllUser();
+
+                    foreach($users as $key => $user) {
+                        if($user['email'] !== $_SESSION['user']) {
+                            $status_login = "";
+                            if($user['login_status'] == 1) {
+                                $status_login = "Online";
+                            } else {
+                                $status_login = "Offline";
+                            }
+                                                    
+                
+                ?>
+                    <div>
+                        <div class="flex items-center space-x-4 bg-gray-200 h-[80px] px-2 cursor-pointer border-b-2">
+                            <img class="w-[50px] h-[50px] rounded-full" src="./img/dummy/people.jpg" alt="Profile Image">
+                            <div class="flex flex-col">
+                                <span class="font-semibold"><?=$user['name']?></span>
+                                <small class="text-sm"><?=$status_login?></small>
+                            </div>
                         </div>
+                        <hr class="border border-gray-300">
                     </div>
-                    <hr class="border border-gray-300">
-                </div>
-                <div>
-                    <div class="flex items-center space-x-4 bg-gray-200 h-[80px] px-2 cursor-pointer border-b-2">
-                        <img class="w-[50px] h-[50px] rounded-full" src="./img/dummy/people.jpg" alt="Profile Image">
-                        <div class="flex flex-col">
-                            <span class="font-semibold">Ilham Muttaqien</span>
-                            <small class="text-sm">Online</small>
-                        </div>
-                    </div>
-                    <hr class="border border-gray-300">
-                </div>
+
+                <?php 
+                        }
+                    }
+                ?>
             </div>
         </div>
         <!-- Right Side  -->
