@@ -31,6 +31,7 @@ class Chat implements MessageComponentInterface {
         $data = json_decode($msg, true);
         date_default_timezone_set('Asia/Jakarta');
         
+        // Create object for class chats
         $objChat =  new \Chats;
         $objChat->setUserId($data['user_id']);
         $objChat->setMessage($data['msg']);

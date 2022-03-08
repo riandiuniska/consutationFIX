@@ -1,6 +1,7 @@
 <?php
 
     class Users {
+        // Users properties
         private $id;
         private $name;
         private $email;
@@ -10,13 +11,15 @@
         private $db_conn;
 
 
+        // Constructor
         public function __construct() {
             require_once("DbConnect.php");
+            // Create database connection
             $db = new DbConnect();
             $this->db_conn = $db->connect();
         }
 
-
+        // Setter & Getter method
         function getId() { 
             return $this->id; 
         }
@@ -66,6 +69,7 @@
         }
 
 
+        // Insert user data to database
         public function insertData() {
             $sql = "INSERT INTO `users`(`user_id`, `name`, `email`, `password`, `login_status`, `last_login`) VALUES (null, :name, :email, :password, :login_status, :last_login)";
 
@@ -88,6 +92,7 @@
             }
         }
 
+        // Get user data by email
         public function getUserByEmail() {
             $statement = $this->db_conn->prepare("SELECT * FROM users WHERE email = :email");
             $statement->bindParam(":email", $this->email);
@@ -102,6 +107,7 @@
             return $user;
         }
 
+        // Get user data by id
         public function getUserById() {
             $statement = $this->db_conn->prepare("SELECT * FROM users WHERE user_id = :id");
             $statement->bindParam(":id", $this->id);
@@ -116,6 +122,7 @@
             return $user;
         }
 
+        // Update user login status on database
         public function updateLoginStatus() {
             $statement = $this->db_conn->prepare("UPDATE users SET login_status = :login_status, last_login = :last_login WHERE user_id = :id");
             $statement->bindParam(":login_status", $this->login_status);
@@ -133,6 +140,7 @@
             }
         }
 
+        // Get all user data
         public function getAllUser() {
             $statement = $this->db_conn->prepare("SELECT * FROM users");
             $statement->execute();
@@ -141,11 +149,13 @@
             return $userData;
         }
 
+        // Register new user account
         public function registerNewUser($data) {
 
             $msg = "";
             $is_ok = false;
 
+            // Validate user input
             if(!isset($data['name']) || !is_string($data['name'])) {
                 $msg = "Missing name string!";
                 goto out;
@@ -204,11 +214,13 @@
             }
         }
 
+        // Login user
         public function loginUser($data) {
 
             $msg = "";
             $is_ok = false;
 
+            // Valdate user input
             if(!isset($data['email']) || !is_string($data['email'])) {
                 $msg = "Missing email string!";
                 goto out;

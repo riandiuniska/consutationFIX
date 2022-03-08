@@ -2,6 +2,7 @@
 
 
 class Chats {
+    // Chats properties
     private $chat_id;
     private $user_id;
     private $message;
@@ -9,6 +10,7 @@ class Chats {
     private $db_conn;
 
 
+    // Constructor
     public function __construct()
     {
         require_once("DbConnect.php");
@@ -16,6 +18,7 @@ class Chats {
         $this->db_conn = $db->connect();
     }
 
+    // Setter & Getter method
     public function getChatId() {
         return $this->chat_id;
     }
@@ -48,6 +51,7 @@ class Chats {
         return $this->created_at = $created_at;
     }
 
+    // Insert message to the database
     public function saveChat() {
         $statement = $this->db_conn->prepare('INSERT INTO chats VALUES(null, :user_id, :message, :created_at)');
         $statement->bindParam(":user_id", $this->user_id);
@@ -61,6 +65,7 @@ class Chats {
         }
     }
 
+    // Get all chat messages
     public function getAllChat() {
         $statement = $this->db_conn->prepare("SELECT * FROM chats INNER JOIN users ON chats.user_id = users.user_id");
         $statement->execute();

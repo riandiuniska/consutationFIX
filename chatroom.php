@@ -21,7 +21,11 @@ $users = $obj->getAllUser();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat Room Dashboard</title>
+
+    <!-- Tailwindcss -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Jquery -->
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 
     <script>
@@ -42,6 +46,9 @@ $users = $obj->getAllUser();
             $user = $obj->getUserByEmail();
             echo "<input type='hidden' name='userId' id='userId' value='" . $user['user_id'] . "'>"; 
         ?>
+
+
+        <!-- Table other users -->
         <table id="list_users" class="border mx-auto">
             <thead>
                 <th>Name</th>
@@ -52,6 +59,7 @@ $users = $obj->getAllUser();
             
             <tbody>
                 <?php 
+                // Load other users from database
                     foreach($users as $key => $users) { 
                         $loginStatus = '';
                         if($users['login_status'] == 1) {
@@ -81,7 +89,8 @@ $users = $obj->getAllUser();
             <a class="bg-red-500 px-4 py-1 text-white rounded-lg" href="logout.php">Logout</a>
             <a class="bg-green-500 px-4 py-1 text-white rounded-lg" href="private_chat.php" >Private Chat</a>
         </div>
-
+        
+        <!-- Chat box container -->
         <div class="w-full">
             <div class="bg-gray-200 w-8/12 h-[400px] mx-auto mt-10 p-4 flex flex-col gap-y-2 overflow-y-scroll" id="chat-container">
                 <div class="bg-yellow-200 rounded-lg px-4 py-2 max-w-fit mx-auto">
@@ -92,8 +101,10 @@ $users = $obj->getAllUser();
                     $chats = new Chats;
                     $chat = $chats->getAllChat();
 
+                    // Load all messages from database
                     foreach($chat as $key => $chat) {
 
+                        // Create new object for class users
                         $objUser = new Users;
                         $objUser->setEmail($_SESSION['user']);
                         $userData = $objUser->getUserByEmail();
@@ -125,11 +136,13 @@ $users = $obj->getAllUser();
     
     <script>
         $(document).ready(function() {
+            // Initialize new websocket connection
             var conn = new WebSocket('ws://localhost:8080');
             conn.onopen = function(e) {
                 console.log("Connection established!");
             };
 
+            // Receive sent message
             conn.onmessage = function(e) {
                 console.log(e.data);
                 data = JSON.parse(e.data);
@@ -151,6 +164,7 @@ $users = $obj->getAllUser();
 
             };
 
+            // Trigger button for send message
             $("#send").click(function(event) {
                 event.preventDefault();
                 var msg = $("#message").val();
@@ -160,6 +174,8 @@ $users = $obj->getAllUser();
                     user_id: uid,
                     msg: msg
                 };
+
+                // Sent message
                 conn.send(JSON.stringify(data));
 
                 $("#message").val("");
