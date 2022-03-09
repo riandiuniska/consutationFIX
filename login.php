@@ -4,7 +4,7 @@ require "./db/Users.php";
 
 // Session check
 if(isset($_SESSION['user'])) {
-    header("location: chatroom.php");
+    header("location: ./");
 }
 
 session_start();
@@ -19,7 +19,7 @@ if(isset($_POST['login'])) {
         echo "
         <script>
             alert('" . $loginResponse['msg'] . "');
-            location.replace('chatroom.php');
+            location.replace('./');
         </script>";
 
     } else {
