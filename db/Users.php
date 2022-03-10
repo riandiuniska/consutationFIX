@@ -251,9 +251,7 @@
                 date_default_timezone_set('Asia/Jakarta');
                 $this->setLoginStatus(1);
                 $this->setLastLogin(date("Y-m-d H:i:s"));
-                $this->setEmail($_POST['email']);
-                $userData = $this->getUserByEmail();
-                $userId = $userData['user_id'];
+                $userId = $usersData['user_id'];
                 $this->setId($userId);
                 $this->updateLoginStatus();
 
