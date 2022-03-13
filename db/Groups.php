@@ -7,7 +7,7 @@ class Groups {
 
     public function __construct() 
     {
-        require_once("./DbConnect.php");
+        require_once("DbConnect.php");
         $conn = new DbConnect;
         $this->db_conn = $conn->connect();
     }
@@ -40,4 +40,5 @@ class Groups {
 
         return $groupsData;
     }
+
 }
