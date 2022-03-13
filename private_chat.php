@@ -45,7 +45,7 @@ if(!isset($_SESSION['user'])) {
                                                     
                 
                 ?>
-                    <div>
+                    <div onclick="requestChat()">
                         <div class="flex items-center space-x-4 bg-gray-200 h-[80px] px-2 cursor-pointer border-b-2">
                             <img class="w-[50px] h-[50px] rounded-full" src="./img/dummy/people.jpg" alt="Profile Image">
                             <div class="flex flex-col">
@@ -67,5 +67,30 @@ if(!isset($_SESSION['user'])) {
 
         </div>
     </div>
+
+    <script>
+        function requestChat() {
+            $.ajax({
+                method: "POST",
+                url: "action.php",
+                success: function(data, status) {
+                    requestNewWSConnection(data);
+                    var conn = new WebSocket("ws://localhost:" + data);
+                    conn.onopen = function(e) {
+                        console.log("Connection Establish...");
+                    }
+                }
+            })
+        }
+
+        function requestNewWSConnection(data) {
+            $.post("./bin/chat-server.php", {
+                data: data
+            }, function(data, status) {
+                console.log(data);
+            })
+        }
+            
+    </script>
 </body>
 </html>

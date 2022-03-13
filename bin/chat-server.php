@@ -6,13 +6,15 @@ use MyApp\Chat;
 
     require dirname(__DIR__) . '/vendor/autoload.php';
 
+    $freePort = $_POST['data'];
+
     $server = IoServer::factory(
         new HttpServer(
             new WsServer(
                 new Chat()
             )
         ),
-        8080
+        $freePort
     );
 
     $server->run();
