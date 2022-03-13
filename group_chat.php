@@ -61,10 +61,13 @@ echo "<input type='hidden' name='userId' id='userId' value='" . $user['user_id']
             </div>
         </div>
         <!-- Right Side  -->
-        <div class="flex-grow h-screen bg-yellow-200">
-            <form class="" action="" method="POST">
-                <input class="" type="text" name="message" id="message" placeholder="Enter messages...">
-                <button class="" type="submit" name="send" id="send">Kirim</button>
+        <div class="w-9/12 h-screen bg-yellow-200">
+            <div class="w-full h-[90%] mx-auto p-4 flex flex-col gap-y-2 overflow-y-scroll" id="chat-container">
+
+            </div>
+            <form class="w-9/12 fixed bottom-0 flex mb-0 h-[10%]" action="" method="POST">
+                <input class="px-4 py-1 flex-1 border border-gray-200 outline-none" type="text" name="message" id="message" placeholder="Enter messages...">
+                <button class="w-[80px] bg-blue-500 text-white" type="submit" name="send" id="send">Kirim</button>
             </form>
         </div>
     </div>
@@ -87,6 +90,25 @@ echo "<input type='hidden' name='userId' id='userId' value='" . $user['user_id']
 
                     conn.onmessage = function(e) {
                         console.log(e.data);
+                        data = JSON.parse(e.data);
+
+                        var styleBox = '';
+
+                        if(data.from == "Me") {
+                            styleBox = 'bg-red-200 text-right ml-auto';
+                        } else {
+                            styleBox = 'bg-green-200 text-left';
+                        }
+                        
+                        if(data.group_id == id) {
+                            var box = '<div class="' + styleBox + ' max-w-fit rounded-xl px-4 py-2 ..."><small class="font-semibold">' + data.from + 
+                            '</small><p class="">' + data.msg + 
+                            '</p><p class="text-right text-xs text-gray-400 ">' + data.dt + 
+                            '</p></div>';
+
+                            $("#chat-container").append(box);
+                        }
+                        
                     }
 
                     $("#send").click(function(e) {
@@ -94,12 +116,15 @@ echo "<input type='hidden' name='userId' id='userId' value='" . $user['user_id']
                         let message = document.getElementById("message").value;
                         let uid = document.getElementById("userId").value;
 
-                        var data = {
+                        let chatData = {
                             user_id: uid,
-                            msg: message
+                            msg: message,
+                            group_id: id,
                         };
 
-                        conn.send(JSON.stringify(data));
+                        conn.send(JSON.stringify(chatData));
+
+                        document.getElementById("message").value = "";
                     })
                 }
             })
