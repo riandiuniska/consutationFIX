@@ -5,8 +5,7 @@ class Ports {
     private $port_id;
     private $value;
     private $status;
-    private $person1;
-    private $person2;
+    private $group_id;
     private $db_conn;
 
     // constructor
@@ -41,20 +40,12 @@ class Ports {
         $this->status = $status;
     }
 
-    public function get_person1() {
-        return $this->person1;
+    public function get_group_id() {
+        return $this->group_id;
     }
 
-    public function set_person1($person1) {
-        $this->person1 = $person1;
-    }
-
-    public function get_person2() {
-        return $this->person2;
-    }
-
-    public function set_person2($person2) {
-        $this->person1 = $person2;
+    public function set_group_id($id) {
+        $this->group_id = $id;
     }
 
     public function get_all_ports() {
@@ -82,5 +73,37 @@ class Ports {
         }
 
         return $freePort;
+    }
+
+    public function update_port_status() {
+        $stmt = $this->db_conn->prepare("UPDATE ports SET status = :status, group_id = :group_id WHERE value = :value");
+        $stmt->bindParam(":status", $this->status);
+        $stmt->bindParam(":group_id", $this->group_id);
+        $stmt->bindParam(":value", $this->value);
+
+        try {
+            if($stmt->execute()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function get_port_by_group_id() {
+        $stmt = $this->db_conn->prepare("SELECT * FROM ports WHERE group_id = :group_id");
+        $stmt->bindParam(":group_id", $this->group_id);
+
+        try {
+            if($stmt->execute()) {
+                $port = $stmt->fetch(PDO::FETCH_ASSOC);
+            }
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+
+        return $port;
     }
 }

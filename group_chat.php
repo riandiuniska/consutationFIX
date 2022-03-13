@@ -1,10 +1,18 @@
 <?php
 
 session_start();
+require("db/Users.php");
+
 
 if(!isset($_SESSION['user'])) {
     header("location: login.php");
 }
+
+$objUser = new Users;
+$objUser->setEmail($_SESSION['user']);
+$user = $objUser->getUserByEmail();
+echo "<input type='hidden' name='userId' id='userId' value='" . $user['user_id'] . "'>"; 
+
 
 ?>
 
@@ -37,7 +45,7 @@ if(!isset($_SESSION['user'])) {
                     foreach($groups as $key => $group) {                                                    
                 
                 ?>
-                    <div onclick="requestChat()">
+                    <div onclick="requestChat(<?=$group['group_id'];?>)">
                         <div class="flex items-center space-x-4 bg-gray-200 h-[80px] px-2 cursor-pointer border-b-2">
                             <img class="w-[50px] h-[50px] rounded-full" src="./img/dummy/people.jpg" alt="Profile Image">
                             <div class="flex flex-col">
@@ -54,21 +62,45 @@ if(!isset($_SESSION['user'])) {
         </div>
         <!-- Right Side  -->
         <div class="flex-grow h-screen bg-yellow-200">
-
+            <form class="" action="" method="POST">
+                <input class="" type="text" name="message" id="message" placeholder="Enter messages...">
+                <button class="" type="submit" name="send" id="send">Kirim</button>
+            </form>
         </div>
     </div>
 
     <script>
-        function requestChat() {
+        function requestChat(id) {
             $.ajax({
                 method: "POST",
+                data: {
+                    group_id: id
+                },
                 url: "action.php",
                 success: function(data, status) {
+                    // console.log(data);
                     requestNewWSConnection(data);
                     var conn = new WebSocket("ws://localhost:" + data);
                     conn.onopen = function(e) {
                         console.log("Connection Establish...");
                     }
+
+                    conn.onmessage = function(e) {
+                        console.log(e.data);
+                    }
+
+                    $("#send").click(function(e) {
+                        e.preventDefault();
+                        let message = document.getElementById("message").value;
+                        let uid = document.getElementById("userId").value;
+
+                        var data = {
+                            user_id: uid,
+                            msg: message
+                        };
+
+                        conn.send(JSON.stringify(data));
+                    })
                 }
             })
         }
