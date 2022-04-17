@@ -187,12 +187,13 @@
             }
 
             date_default_timezone_set('Asia/Jakarta');
+            $date = date('Y-m-d H:i:s');
 
             $this->setName($data['name']);
             $this->setEmail($data['email']);
             $this->setPassword(password_hash($data['password'], PASSWORD_BCRYPT));
             $this->setLoginStatus(0);
-            $this->setLastLogin("");
+            $this->setLastLogin($date);
 
             if($this->getUserByEmail() > 0) {
                 $msg = "Email {$data['email']} already used";

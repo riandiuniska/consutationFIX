@@ -16,6 +16,7 @@ if(isset($_POST['login'])) {
     if($loginResponse['is_ok']) {
        
         $_SESSION['user'] = $_POST['email'];
+        
         echo "
         <script>
             alert('" . $loginResponse['msg'] . "');

@@ -25,7 +25,7 @@ if(!isset($_SESSION['user'])) {
         <div class="w-3/12 bg-blue-200 h-screen">
             <!-- Left Side -->
             <div class="py-5 bg-gray-200">
-                <h1 class="text-center font-bold text-2xl">Welcome to Private Chat</h1>
+                <h1 class="text-center font-bold text-2xl">Welcome to Chat</h1>
             </div>
             <hr class="border border-gray-200 my-4 mx-2">
             <div class="px-2 overflow-scroll-y">
@@ -35,6 +35,7 @@ if(!isset($_SESSION['user'])) {
                     $users = $objUser->getAllUser();
 
                     foreach($users as $key => $user) {
+
                         if($user['email'] !== $_SESSION['user']) {
                             $status_login = "";
                             if($user['login_status'] == 1) {

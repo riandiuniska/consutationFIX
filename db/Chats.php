@@ -6,6 +6,7 @@ class Chats {
     private $chat_id;
     private $user_id;
     private $message;
+    private $group_id;
     private $created_at;
     private $db_conn;
 
@@ -43,6 +44,14 @@ class Chats {
         return $this->message = $message;
     }
 
+    public function getGroupId(){
+        return $this->group_id;
+    }
+
+    public function setGroupId($group_id){
+        return $this->group_id = $group_id;
+    }
+
     public function getCreatedAt() {
         return $this->created_at;
     }
@@ -53,7 +62,7 @@ class Chats {
 
     // Insert message to the database
     public function saveChat() {
-        $statement = $this->db_conn->prepare('INSERT INTO chats VALUES(null, :user_id, :message, :created_at)');
+        $statement = $this->db_conn->prepare('INSERT INTO chats VALUES(null, :user_id, :message, :created_at, null)');
         $statement->bindParam(":user_id", $this->user_id);
         $statement->bindParam(":message", $this->message);
         $statement->bindParam(":created_at", $this->created_at);
@@ -64,6 +73,7 @@ class Chats {
             return false;
         }
     }
+
 
     // Get all chat messages
     public function getAllChat() {

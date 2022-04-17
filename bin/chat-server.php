@@ -7,6 +7,7 @@ use MyApp\Chat;
     require dirname(__DIR__) . '/vendor/autoload.php';
 
     $freePort = $_POST['data'];
+    var_dump($freePort);
 
     $server = IoServer::factory(
         new HttpServer(
@@ -15,6 +16,7 @@ use MyApp\Chat;
             )
         ),
         $freePort
+        // 60001
     );
 
     $server->run();
