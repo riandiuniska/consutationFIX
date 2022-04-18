@@ -23,7 +23,7 @@ echo "<input type='hidden' name='userId' id='userId' value='" . $user['user_id']
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Private Chat</title>
+    <title>Group Chat</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 </head>
@@ -31,8 +31,8 @@ echo "<input type='hidden' name='userId' id='userId' value='" . $user['user_id']
     <div class="flex items-center">
         <div class="w-3/12 bg-blue-200 h-screen">
             <!-- Left Side -->
-            <div class="py-5 bg-gray-200">
-                <h1 class="text-center font-bold text-2xl">Welcome to Private Chat</h1>
+            <div class="py-5 bg-gray-200">  
+                <h1 class="text-center font-bold text-2xl">Welcome to group Chat</h1>
             </div>
             <hr class="border border-gray-200 my-4 mx-2">
             <div class="px-2 overflow-scroll-y">
@@ -42,7 +42,8 @@ echo "<input type='hidden' name='userId' id='userId' value='" . $user['user_id']
                     $objGroup = new Groups;
                     $groups = $objGroup->get_all_groups();
 
-                    foreach($groups as $key => $group) {                                                    
+                    foreach($groups as $key => $group) {         
+                        var_dump($group['group_id']);                                            
                 
                 ?>
                     <div onclick="requestChat(<?=$group['group_id'];?>)">
@@ -83,7 +84,7 @@ echo "<input type='hidden' name='userId' id='userId' value='" . $user['user_id']
                 success: function(data, status) {
                     // console.log(data);
                     requestNewWSConnection(data);
-                    var conn = new WebSocket("ws://localhost:" + data);
+                    var conn = new WebSocket("ws://localhost:8080");
                     conn.onopen = function(e) {
                         console.log("Connection Establish...");
                     }
