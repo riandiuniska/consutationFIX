@@ -62,9 +62,10 @@ class Chats {
 
     // Insert message to the database
     public function saveChat() {
-        $statement = $this->db_conn->prepare('INSERT INTO chats VALUES(null, :user_id, :message, :created_at, null)');
+        $statement = $this->db_conn->prepare('INSERT INTO chats VALUES(null, :user_id, :message, :created_at, :group_id)');
         $statement->bindParam(":user_id", $this->user_id);
         $statement->bindParam(":message", $this->message);
+        $statement->bindParam(":group_id", $this->group_id);
         $statement->bindParam(":created_at", $this->created_at);
 
         if($statement->execute()) {
@@ -82,6 +83,24 @@ class Chats {
         $chatsData = $statement->fetchAll(PDO::FETCH_ASSOC);
 
         return $chatsData;
+    }
+
+    // Get Chat by Group_id
+    public function getChatByGroup(){
+        $statement = $this->db_conn->prepare("SELECT * FROM chats INNER JOIN users ON chats.user_id = users.user_id WHERE group_id = :group_id ");
+
+        $statement->bindParam(":group_id", $this->group_id);
+
+        try {
+            if($statement->execute()) {
+                $chat = $statement->fetch(PDO::FETCH_ASSOC);
+            }
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+
+        return $chat;
+
     }
 
 }
