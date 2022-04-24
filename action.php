@@ -2,7 +2,10 @@
     require "./db/Ports.php";
     require "./db/Chats.php";
     require "./db/Users.php";
+
+    // require ".db/Groups.php";
     
+    // PORT
     $objPort = new Ports;
     $objPort->set_group_id($_POST['group_id']);
     $portsData = $objPort->get_port_by_group_id();
@@ -48,4 +51,5 @@
             echo "Port is full!";
         }
     }
+
     ?>

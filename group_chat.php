@@ -100,10 +100,12 @@ echo "<input type='hidden' name='userId' id='userId' value='" . $user['user_id']
     <script>
         function requestChat(id, email) {
 
+
             // mengkosongkan halaman chat box
             $('#chat-container').html("");
 
             console.log(email);
+
             $.ajax({
                 method: "POST",
                 data: {
@@ -117,8 +119,11 @@ echo "<input type='hidden' name='userId' id='userId' value='" . $user['user_id']
 
                     console.log(isi);
 
+                    // ambil data pesan
                     let message = isi.message;
+                    console.log(message);
 
+                    // melakukan looping data pesan yang sesuai dengan id grup
                     for (let e in message){
                         console.log(e + " -> " + message[e]);
                         
@@ -129,8 +134,7 @@ echo "<input type='hidden' name='userId' id='userId' value='" . $user['user_id']
                             console.log(val['name']);
                             console.log(isi.userId);
 
-                            // menambahkan chat yang telah difilter ke dalam halaman 
-                            
+                            // menambahkan chat yang telah difilter ke dalam halaman     
                             let styleBox = '';
 
                             if (val['user_id'] == isi.userId) {
@@ -145,7 +149,7 @@ echo "<input type='hidden' name='userId' id='userId' value='" . $user['user_id']
                                 '</p><p class="text-right text-xs text-gray-400 ">' + val['created_at'] +
                                 '</p></div>';
 
-                            
+                            // mdemasukan ke halaman chatroom 
                             $('#chat-container').append(contain);
 
                             
