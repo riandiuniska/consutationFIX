@@ -45,6 +45,9 @@ echo "<input type='hidden' name='userId' id='userId' value='" . $user['user_id']
             <div class="py-5 bg-gray-200">
                 <h1 class="text-center font-bold text-2xl">Welcome to group Chat</h1>
             </div>
+            <a href="http://localhost/websocket/web-chat-room/frontend/pages/mentor.php"><button type="button" class="px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 mb-2 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Back To Dashboard</button></a>
+
+            
             <hr class="border border-gray-200 my-4 mx-2">
             <div class="px-2 overflow-scroll-y">
                 <!-- Contact -->
@@ -54,7 +57,7 @@ echo "<input type='hidden' name='userId' id='userId' value='" . $user['user_id']
                 $groups = $objGroup->get_all_groups();
 
                 foreach ($groups as $key => $group) {
-                    var_dump($group['group_id']);
+                    
 
                 ?>
 
@@ -85,7 +88,7 @@ echo "<input type='hidden' name='userId' id='userId' value='" . $user['user_id']
         <!-- Right Side  -->
         <div class="w-9/12 h-screen bg-red-100">
             <div class="w-full h-[90%] mx-auto p-4 flex flex-col gap-y-2 overflow-y-scroll" id="chat-container">
-                <p>holla</p>
+                <p>Selamat</p>
 
             </div>
             <form class="w-9/12 fixed bottom-0 flex mb-0 h-[10%]" action="" method="POST">

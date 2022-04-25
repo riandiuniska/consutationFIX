@@ -18,7 +18,7 @@ $user = $objUser->getUserByEmail();
 
 // acceptance
 $acc = new Acceptance;
-$acceptances = $acc->getAll();
+$acceptances = $acc->getNotApprove();
 
 
 // foreach($mentors as $mentor){
@@ -28,6 +28,8 @@ $acceptances = $acc->getAll();
 
 
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -174,7 +176,7 @@ $acceptances = $acc->getAll();
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="flex items-center gap-x-4 h-[50px] rounded-xl px-4 hover:bg-cream text-dark-green hover:text-white">
+                        <a href="../../logout.php" class="flex items-center gap-x-4 h-[50px] rounded-xl px-4 hover:bg-cream text-dark-green hover:text-white">
                             <img class="w-5" src="./Img/icons/logout_icon.svg" alt="Log out Icon">
                             <p class="font-semibold">Log out</p>
                         </a>
@@ -214,12 +216,14 @@ $acceptances = $acc->getAll();
             </div>
             <div class="bg-white w-full h-[50px] flex content-center px-10  rounded-xl">
                 <ul class="flex items-center gap-x-8">
-                    <li class="text-dark-green hover:text-cream hover:border-b-4 hover:border-cream h-[50px] flex items-center font-semibold  cursor-pointer">
+
+                    <a href="http://localhost/websocket/web-chat-room/frontend/pages/mentor_approve.php"><li class="text-dark-green hover:text-cream hover:border-b-4 hover:border-cream h-[50px] flex items-center font-semibold  cursor-pointer">
                         <p>Session</p>
-                    </li>
+                    </li></a>
                     <li class="text-dark-green text-cream border-b-4 border-cream h-[50px] flex items-center font-semibold  cursor-pointer">Booking</li>
                 </ul>
             </div>
+
             <div>
                 <table class="shadow-lg bg-white rounded-xl" style="width: 100%">
                     <colgroup>
@@ -264,14 +268,14 @@ $acceptances = $acc->getAll();
                         </tr>
 
                         <?php foreach($acceptances as $acceptance){ ?>
-                            <tr>
+                            <tr class="status">
                                 <td class="border-b px-4 py-2"><?= $acceptance['name']; ?></td>
                                 <td class="border-b px-4 py-2 text-center"><?= $acceptance['day']; ?></td>
                                 <td class="border-b px-4 py-2 text-center"><?= $acceptance['topic']; ?></td>
-                                <td class="border-b px-4 py-2 text-center" id="status">
+                                <td class="border-b px-4 py-2 text-center">
                                     <?php if($acceptance['status'] == 'disable') { ?>
-                                        <button type="button" class="px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 mb-2 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onclick="changeStatus(<?= $acceptance['acceptance_id'] ?>)">Approve</button>
-                                        <button type="button" class="text-red-700 ml-1 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center mr-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">Not Approve</button>
+                                        <button type="button" class="px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 mb-2 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onclick="changeStatus(<?= $acceptance['acceptance_id'] ?>, 'active')">Approve</button>
+                                        <button type="button" class="text-red-700 ml-1 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center mr-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900 " onclick="changeStatus(<?= $acceptance['acceptance_id'] ?>, 'reject')" >Not Approve</button>
                                     <?php } elseif($acceptance['status'] == 'active') { ?>
                                         <button disabled type="button" class="px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 mb-2 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onclick="changeStatus(<?= $acceptance['acceptance_id'] ?>)">Approved</button>
                                     <?php } else { ?>
@@ -306,7 +310,7 @@ $acceptances = $acc->getAll();
     </script>
 
     <script>
-        function changeStatus(id){
+        function changeStatus(id, status){
 
             if(confirm('apakah anda yakin menerima tawaran ?')){
                 console.log(id);
@@ -314,13 +318,15 @@ $acceptances = $acc->getAll();
                 method:'post',
                 url: '../../action/changeAcc.php',
                 data: {
-                    acc_id : id
+                    acc_id : id,
+                    status: status,
+                    approve: "success"
                 },
                 success: function(data, status){
                     console.log(data)
 
                     let contain = `<button disabled type="button" class="px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 mb-2 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Approved</button>`
-                    $('#status').html(contain)
+                    $('.status').html();
                 }
             })
             }

@@ -113,8 +113,35 @@ class Acceptance{
         return $data;
     }
 
-    public function updateStatus($id){
-        $statement = $this->db_conn->prepare("UPDATE acceptance SET status = 'active' WHERE acceptance_id = $id");
+    public function getNotApprove(){
+        $statement = $this->db_conn->prepare("SELECT * FROM acceptance where status = 'disable'");
+
+        $statement->execute();
+        $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return $data;
+    }
+
+    public function getApprove(){
+        $statement = $this->db_conn->prepare("SELECT * FROM acceptance where not status = 'disable'");
+
+        $statement->execute();
+        $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return $data;
+    }
+
+    public function getDataById($id){
+        $statement = $this->db_conn->prepare("SELECT * FROM acceptance where acceptance_id = $id");
+
+        $statement->execute();
+        $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return $data;
+    }
+
+    public function updateStatus($id, $status){
+        $statement = $this->db_conn->prepare("UPDATE acceptance SET status = '$status' WHERE acceptance_id = $id");
 
         try{
             if($statement->execute()) {
@@ -126,6 +153,10 @@ class Acceptance{
             return $e->getMessage();
         }
     }
+
+
+
+
 }
 
 

@@ -1,3 +1,34 @@
+<?php
+
+session_start();
+
+if (!isset($_SESSION['user'])) {
+    header("location: login.php");
+}
+
+include_once '../../db/Users.php';
+include_once '../../db/Acceptance.php';
+$objUser = new Users;
+
+//mendapatkan data user
+$objUser->setEmail($_SESSION['user']);
+$user = $objUser->getUserByEmail();
+
+
+
+// acceptance
+$acc = new Acceptance;
+$acceptances = $acc->getApprove();
+
+
+// foreach($mentors as $mentor){
+//     echo $mentor['name']; echo '<br>';
+    
+// }
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -138,7 +169,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="flex items-center gap-x-4 h-[50px] rounded-xl px-4 hover:bg-cream text-dark-green hover:text-white">
+                        <a href="../../logout.php" class="flex items-center gap-x-4 h-[50px] rounded-xl px-4 hover:bg-cream text-dark-green hover:text-white">
                             <img class="w-5" src="./Img/icons/logout_icon.svg" alt="Log out Icon">
                             <p class="font-semibold">Log out</p>
                         </a>
@@ -178,10 +209,13 @@
             </div>
             <div class="bg-white w-full h-[50px] flex content-center px-10  rounded-xl">
                 <ul class="flex items-center gap-x-8">
-                    <li class="text-dark-green hover:text-cream hover:border-b-4 hover:border-cream h-[50px] flex items-center font-semibold  cursor-pointer">
-                        <p>Session</p>
+                    <li class="text-dark-green text-cream border-b-4 border-cream h-[50px] flex items-center font-semibold  cursor-pointer">
+                        <a href="#"><p>Session</p></a>
+                        
                     </li>
-                    <li class="text-dark-green text-cream border-b-4 border-cream h-[50px] flex items-center font-semibold  cursor-pointer">Booking</li>
+                    <a href="http://localhost/websocket/web-chat-room/frontend/pages/mentor.php"><li class="text-dark-green hover:text-cream hover:border-b-4 hover:border-cream h-[50px] flex items-center font-semibold  cursor-pointer">
+                         Booking 
+                    </li></a>   
                 </ul>
             </div>
             <div>
@@ -225,6 +259,33 @@
                                 <p>Rejected</p>
                             </td>
                         </tr>
+
+                        <?php foreach($acceptances as $acceptance){ ?>
+                            <tr>
+                            <td class="border-b px-4 py-2"><?= $acceptance['name'] ?></td>
+                            <td class="border-b px-4 py-2 text-center"><?= $acceptance['day'] ?></td>
+                            <td class="border-b px-4 py-2 text-center">Module Konsultasi Penilaian</td>
+                            <td class="border-b px-4 py-2 text-center">
+                                    <?php if($acceptance['status'] == 'disable') { ?>
+                                        <button type="button" class="px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 mb-2 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onclick="changeStatus(<?= $acceptance['acceptance_id'] ?>, 'approve')">Approve</button>
+                                        <button type="button" class="text-red-700 ml-1 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center mr-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900 " onclick="changeStatus(<?= $acceptance['acceptance_id'] ?>, 'reject')" >Not Approve</button>
+                                    <?php } elseif($acceptance['status'] == 'active') { ?>
+                                        <button disabled type="button" class="px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 mb-2 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onclick="changeStatus(<?= $acceptance['acceptance_id'] ?>)">Approved</button>
+                                    <?php } else { ?>
+                                        <button disabled type="button" class="text-red-700 ml-1 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center mr-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">Rejected</button>
+                                    <?php } ?>
+                            </td>
+                            <td class="border-b px-4 py-2 text-center">
+                       
+                                    <?php if($acceptance['status'] == 'active') { ?>
+                                        <a href="http://localhost/websocket/web-chat-room/group_chat.php"><button type="button" class="px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Konsultasi</button></a>
+                                    <?php } else { ?>
+                                        <p>Reject</p>
+                                    <?php } ?>
+                            </td>
+                        </tr>
+                        <?php } ?>
+
                     </tbody>
                 </table>
             </div>

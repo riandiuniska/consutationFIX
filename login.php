@@ -13,15 +13,29 @@ if(isset($_POST['login'])) {
     // Create object for class users
     $objUser = new Users;
     $loginResponse = $objUser->loginUser($_POST);
+    $userData = $objUser->getUserByEmail($_POST['email']);
+    $role = $userData['role'];
     if($loginResponse['is_ok']) {
        
         $_SESSION['user'] = $_POST['email'];
         
-        echo "
-        <script>
-            alert('" . $loginResponse['msg'] . "');
-            location.replace('./');
-        </script>";
+        if($role == 3){
+            echo "
+            <script>
+                alert('" . $loginResponse['msg'] . "');
+                location.replace('http://localhost/websocket/web-chat-room/frontend/pages');
+            </script>";
+        } elseif($role == 2) {
+            echo "
+            <script>
+                alert('" . $loginResponse['msg'] . "');
+                location.replace('http://localhost/websocket/web-chat-room/frontend/pages/mentor.php');
+            </script>";
+        } else {
+
+        }
+
+
 
     } else {
         echo "<script>alert('" . $loginResponse['msg'] . "')</script>";
