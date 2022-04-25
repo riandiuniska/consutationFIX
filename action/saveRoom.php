@@ -2,6 +2,7 @@
 
 require "../db/Acceptance.php";
 
+
 if(!empty($_POST['submit'])){
     $name = $_POST['name'];
     $email = $_POST['email'];
@@ -26,6 +27,7 @@ if(!empty($_POST['submit'])){
 
     if($objAcc->saveData()){
         echo 'berhasil disimpan';
+        header("Location: http://localhost/websocket/web-chat-room/frontend/pages?message=berhasil");
     } else {
         echo 'gagal simpan';
     }

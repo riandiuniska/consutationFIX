@@ -103,6 +103,29 @@ class Acceptance{
         }
 
     }
+
+    public function getAll(){
+        $statement = $this->db_conn->prepare("SELECT * FROM acceptance");
+
+        $statement->execute();
+        $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return $data;
+    }
+
+    public function updateStatus($id){
+        $statement = $this->db_conn->prepare("UPDATE acceptance SET status = 'active' WHERE acceptance_id = $id");
+
+        try{
+            if($statement->execute()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch(Exception $e){
+            return $e->getMessage();
+        }
+    }
 }
 
 

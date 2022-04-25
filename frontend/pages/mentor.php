@@ -1,3 +1,34 @@
+<?php
+
+session_start();
+
+if (!isset($_SESSION['user'])) {
+    header("location: login.php");
+}
+
+include_once '../../db/Users.php';
+include_once '../../db/Acceptance.php';
+$objUser = new Users;
+
+//mendapatkan data user
+$objUser->setEmail($_SESSION['user']);
+$user = $objUser->getUserByEmail();
+
+
+
+// acceptance
+$acc = new Acceptance;
+$acceptances = $acc->getAll();
+
+
+// foreach($mentors as $mentor){
+//     echo $mentor['name']; echo '<br>';
+    
+// }
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,6 +47,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://unpkg.com/flowbite@1.4.2/dist/flowbite.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tw-elements/dist/css/index.min.css" />
+
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+    
     <script>
         tailwind.config = {
             theme: {
@@ -153,7 +189,7 @@
             <!-- Header / Profile -->
             <div class="flex items-center gap-x-4 justify-end">
                 <img class="w-10" src="./Img/icons/default_profile.svg" alt="Profile Image">
-                <p class="text-dark-green font-semibold">Mentor Name</p>
+                <p class="text-dark-green font-semibold"><?= $user['name']; ?></p>
             </div>
 
             <!-- Breadcrumb -->
@@ -226,6 +262,29 @@
                                 <p class="text-center">-</p>
                             </td>
                         </tr>
+
+                        <?php foreach($acceptances as $acceptance){ ?>
+                            <tr>
+                                <td class="border-b px-4 py-2"><?= $acceptance['name']; ?></td>
+                                <td class="border-b px-4 py-2 text-center"><?= $acceptance['day']; ?></td>
+                                <td class="border-b px-4 py-2 text-center"><?= $acceptance['topic']; ?></td>
+                                <td class="border-b px-4 py-2 text-center" id="status">
+                                    <?php if($acceptance['status'] == 'disable') { ?>
+                                        <button type="button" class="px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 mb-2 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onclick="changeStatus(<?= $acceptance['acceptance_id'] ?>)">Approve</button>
+                                        <button type="button" class="text-red-700 ml-1 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center mr-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">Not Approve</button>
+                                    <?php } elseif($acceptance['status'] == 'active') { ?>
+                                        <button disabled type="button" class="px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 mb-2 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onclick="changeStatus(<?= $acceptance['acceptance_id'] ?>)">Approved</button>
+                                    <?php } else { ?>
+                                        <button disabled type="button" class="text-red-700 ml-1 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center mr-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">Rejected</button>
+                                    <?php } ?>
+                                    
+                                    
+                                </td>
+                                <td class="border-b px-4 py-2">
+                                    <p class="text-center">-</p>
+                                </td>
+                            </tr>
+                       <?php } ?>
                     </tbody>
                 </table>
             </div>
@@ -243,6 +302,29 @@
         let sidebar = document.querySelector('.sidebar');
         btnToggle.onclick = function() {
             sidebar.classList.toggle('in-active');
+        }
+    </script>
+
+    <script>
+        function changeStatus(id){
+
+            if(confirm('apakah anda yakin menerima tawaran ?')){
+                console.log(id);
+            $.ajax({
+                method:'post',
+                url: '../../action/changeAcc.php',
+                data: {
+                    acc_id : id
+                },
+                success: function(data, status){
+                    console.log(data)
+
+                    let contain = `<button disabled type="button" class="px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 mb-2 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Approved</button>`
+                    $('#status').html(contain)
+                }
+            })
+            }
+
         }
     </script>
 

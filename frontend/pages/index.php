@@ -13,10 +13,10 @@ include_once '../../db/Users.php';
 // mendpatkan data user mentor
 $objUser = new Users;
 $mentors = $objUser->getUserMentor();
- foreach($mentors as $mentor){
-    echo $mentor['user_id']; echo '<br>';
-    // echo $mentor['email'];
- }
+//  foreach($mentors as $mentor){
+//     echo $mentor['user_id']; echo '<br>';
+//     // echo $mentor['email'];
+//  }
 
 //mendapatkan data user
 $objUser->setEmail($_SESSION['user']);
@@ -234,13 +234,22 @@ $user = $objUser->getUserByEmail();
                     </ul>
                 </div>
             </div>
+
+            <?php
+
+
+            ?>
+
             <div class="grid justify-items-center gap-4 gap-y-[50px] grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 w-auto">
 
       
                 
  
 
+                <?php
+                
 
+                ?>
 
                 <!-- card bimbingan -->
                 <?php foreach($mentors as $mentor){ ?>
@@ -346,10 +355,10 @@ $user = $objUser->getUserByEmail();
                                         placeholder="Leave a comment..."></textarea>
                                 </div>
                                 <div class="text-center">
-                                    <button type="button" name="submit"
+                                    <button type="submit" name="submit"
                                         class="items-center focus:outline text-white border-yellow-400 bg-yellow-500 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900">Submit</button>
 
-                                    <input type="button" name="submit" value="submit">
+                                    <button type="submit" name="submit" value="success" >Kirim</button>
 
                                     <button data-modal-toggle="defaultModal" type="button"
                                         class="text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900">Cancel</button>
