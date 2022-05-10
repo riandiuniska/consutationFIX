@@ -1,6 +1,7 @@
 <?php
 
     require "../db/Users.php";
+    require "../db/Availability.php";
 
 
 
@@ -12,9 +13,19 @@
     
         $objUser->setId($_POST['user_id']);
     
-        $userData = $objUser->getUserById();
+        $response = json_decode(file_get_contents('https://i0ifhnk0.directus.app/items/user?filter={"user_id":"' .$_POST['user_id'].'"}'), true);
+        $userData = $response['data'];
 
-        echo JSON_encode($userData);
+        $objAva = new Availability;
+
+        $avaData = $objAva->getDataById($_POST['user_id']);
+
+        $data = [
+            'ava' => $avaData,
+            'user' => $userData
+        ];
+
+        echo JSON_encode($data);
     }
 
 

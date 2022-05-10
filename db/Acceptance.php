@@ -84,10 +84,9 @@ class Acceptance{
     }
 
     public function saveData(){
-        $statement = $this->db_conn->prepare("INSERT INTO acceptance VALUES(null,:name, :email,'disable', :day, :time, :topic, :user_id)");
+        $statement = $this->db_conn->prepare("INSERT INTO acceptance VALUES(null,:name, :email,'disable', :time, :topic, :user_id)");
         $statement->bindParam(':email', $this->email);
         $statement->bindParam(':name', $this->name);
-        $statement->bindParam(':day', $this->day);
         $statement->bindParam(':time', $this->time);
         $statement->bindParam(':topic', $this->topic);
         $statement->bindParam(':user_id', $this->user_id);

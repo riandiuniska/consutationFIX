@@ -6,7 +6,6 @@ require "../db/Acceptance.php";
 if(!empty($_POST['submit'])){
     $name = $_POST['name'];
     $email = $_POST['email'];
-    $date = $_POST['date'];
     $time = $_POST['time'];
     $topic = $_POST['topic'];
     $mentor = $_POST['id_mentor'];
@@ -14,7 +13,6 @@ if(!empty($_POST['submit'])){
     $objAcc = new Acceptance;
     $objAcc->setName($name);
     $objAcc->setEmail($email);
-    $objAcc->setDay($date);
     $objAcc->setTime($time);
     $objAcc->setTopic($topic);
     $objAcc->setUserId($mentor);

@@ -2,13 +2,22 @@
 
 session_start();
 
+include_once '../../db/Users.php';
+include_once '../../db/Acceptance.php';
+
+$objUser = new Users;
+$objUser->setEmail($_SESSION['user']);
+$orang = $objUser->getUserByEmail();
+
+
+if($_SESSION['role'] == 3){
+    header("location: http://localhost/websocket/web-chat-room/frontend/pages");
+}
+
 if (!isset($_SESSION['user'])) {
     header("location: login.php");
 }
 
-include_once '../../db/Users.php';
-include_once '../../db/Acceptance.php';
-$objUser = new Users;
 
 //mendapatkan data user
 $objUser->setEmail($_SESSION['user']);
@@ -191,7 +200,7 @@ $acceptances = $acc->getNotApprove();
             <!-- Header / Profile -->
             <div class="flex items-center gap-x-4 justify-end">
                 <img class="w-10" src="./Img/icons/default_profile.svg" alt="Profile Image">
-                <p class="text-dark-green font-semibold"><?= $user['name']; ?></p>
+                <p class="text-dark-green font-semibold"><?= $_SESSION['user']; ?></p>
             </div>
 
             <!-- Breadcrumb -->
@@ -242,35 +251,10 @@ $acceptances = $acc->getNotApprove();
                             <th class="border-b text-center px-4 py-2">Keterangan</th>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td class="border-b px-4 py-2 ">Abdullah Azzam</td>
-                            <td class="border-b px-4 py-2 text-center">20-02-2022</td>
-                            <td class="border-b px-4 py-2 text-center">Module Konsultasi Penilaian</td>
-                            <td class="border-b px-4 py-2 text-center">
-                                <button type="button" class="px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 mb-2 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Approve</button>
-                                <button type="button" class="text-red-700 ml-1 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center mr-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">Not Approve</button>
-                            </td>
-                            <td class="border-b px-4 py-2">
-                                <p class="text-center">-</p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="border-b px-4 py-2">Syaiful Qomarrudin</td>
-                            <td class="border-b px-4 py-2 text-center">29-02-2022</td>
-                            <td class="border-b px-4 py-2 text-center">Module Konsultasi Penilaian</td>
-                            <td class="border-b px-4 py-2 text-center">
-                                <button type="button" class="px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 mb-2 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Approve</button>
-                                <button type="button" class="text-red-700 ml-1 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center mr-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">Not Approve</button>
-                            </td>
-                            <td class="border-b px-4 py-2">
-                                <p class="text-center">-</p>
-                            </td>
-                        </tr>
-
                         <?php foreach($acceptances as $acceptance){ ?>
                             <tr class="status">
                                 <td class="border-b px-4 py-2"><?= $acceptance['name']; ?></td>
-                                <td class="border-b px-4 py-2 text-center"><?= $acceptance['day']; ?></td>
+                                <td class="border-b px-4 py-2 text-center"><?= $acceptance['time']; ?></td>
                                 <td class="border-b px-4 py-2 text-center"><?= $acceptance['topic']; ?></td>
                                 <td class="border-b px-4 py-2 text-center">
                                     <?php if($acceptance['status'] == 'disable') { ?>

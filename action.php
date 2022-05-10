@@ -17,10 +17,13 @@
         $chats = new Chats;
         $chat = $chats->getChatByGroup($_POST['group_id']);
 
-        $objUser = new Users;
-        $objUser->setEmail($_POST['user_email']);
-        $userData = $objUser->getUserByEmail();
-        $userId = $userData['user_id'];
+        // $objUser = new Users;
+        // $objUser->setEmail($_POST['user_email']);
+        // $userData = $objUser->getUserByEmail();
+
+        $userData = json_decode(file_get_contents('https://i0ifhnk0.directus.app/items/user?filter={"user_email":"' .$_POST['user_email'].'"}'), true);
+        $data = $userData['data'];
+        $userId = $data[0]['user_id'];
     
         // echo json_encode($chat);
 

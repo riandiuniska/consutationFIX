@@ -1,6 +1,23 @@
 <?php
+include_once '../../db/Users.php';
 
 session_start();
+
+$objUser = new Users;
+$objUser->setEmail($_SESSION['user']);
+$orang = $objUser->getUserByEmail();
+
+// get user
+$email = $_SESSION['email'];
+$response = json_decode(file_get_contents('https://i0ifhnk0.directus.app/items/user?filter={"role_id":"' . $_SESSION['role'] . '"}'), true);
+$lectures = $response['data'];
+var_dump($lectures);
+
+
+
+if($orang['role'] == 2){
+    header("location: http://localhost/websocket/web-chat-room/frontend/pages/mentor.php");
+}
 
 if (!isset($_SESSION['user'])) {
     header("location: login.php");
@@ -8,10 +25,10 @@ if (!isset($_SESSION['user'])) {
 
 // echo $_SESSION['user'];
 
-include_once '../../db/Users.php';
+
 
 // mendpatkan data user mentor
-$objUser = new Users;
+
 $mentors = $objUser->getUserMentor();
 //  foreach($mentors as $mentor){
 //     echo $mentor['user_id']; echo '<br>';
@@ -193,7 +210,7 @@ $user = $objUser->getUserByEmail();
             <!-- Header / Profile -->
             <div class="flex items-center gap-x-4 justify-end">
                 <img class="w-10" src="./Img/icons/default_profile.svg" alt="Profile Image">
-                <p class="text-dark-green font-semibold"><?= $user['name']; ?></p>
+                <p class="text-dark-green font-semibold"><?= $_SESSION['user']; ?></p>
             </div>
 
             <!-- Breadcrumb -->
@@ -247,7 +264,7 @@ $user = $objUser->getUserByEmail();
                 ?>
 
                 <!-- card bimbingan -->
-                <?php foreach($mentors as $mentor){ ?>
+                <?php foreach($lectures as $mentor){ ?>
 
                     <div class="bg-white h-48 w-full sm:w-4/5 rounded-xl shadow-lg text-center" onclick='bukaModal(<?= $mentor['user_id'] ?>)'
                         data-modal-toggle="defaultModal">
@@ -261,7 +278,7 @@ $user = $objUser->getUserByEmail();
                                 </div>
                             </div>
                         </div>
-                        <h3 class="ml-5 text-left font-bold text-[#1E3F41]"><?php echo $mentor['name'] ?> | 0018990</h3>
+                        <h3 class="ml-5 text-left font-bold text-[#1E3F41]"><?php echo $mentor['user_username'] ?></h3>
                     <h3 class="ml-5 text-left text-[#C4C4C4]">Mentor</h3>
                     </div>
 
@@ -303,7 +320,7 @@ $user = $objUser->getUserByEmail();
                                     
                                     <img class="w-14" src="./Img/icons/default_profile.svg" alt="Profile Image">
                                     <div class="" id="infoUser">
-                                        <p class="text-dark-green text-base font-semibold">Edwina Christy | 0018990</p>
+                                        <p class="text-dark-green text-base font-semibold">Edwina Christy</p>
                                         <p class="text-light-green">Mentor System Analyst</p>
                                     </div>
                                 </div>
@@ -324,22 +341,15 @@ $user = $objUser->getUserByEmail();
                                 </div>
                                 <div>
                                     <label for="text"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Tanggal</label>
-                                    <div class="datepicker relative form-floating mb-3 w-full"
-                                        data-mdb-toggle-button="false">
-                                        <input type="text" name="date" id="date"
-                                            class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 -mb-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                            placeholder="Select a date" data-mdb-toggle="datepicker" />
-                                    </div>
-                                </div>
-                                <div>
-                                    <label for="text"
                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Waktu</label>
                                     <div class="timepicker relative form-floating mb-3 w-full"
                                         id="input-toggle-timepicker" data-mdb-toggle-button="false">
-                                        <input type="text" name="time" id="time"
+                                        <select name="time" id="time" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 -mb-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+
+                                        </select>
+                                        <!-- <input type="text" name="time" id="time"
                                             class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 -mb-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                            placeholder="Select a time" data-mdb-toggle="timepicker" />
+                                            placeholder="Select a time" data-mdb-toggle="timepicker" /> -->
                                     </div>
                                 </div>
                                 <div>
@@ -402,18 +412,23 @@ $user = $objUser->getUserByEmail();
                     method: "POST",
                     data: {
                         user_id: id,
-                        send: true
+                        send: true 
                     },
                     url: '../../action/requestRoom.php',
                     success: function(data, status){
                         let userData = JSON.parse(data);
-                        console.log(userData);
-                        console.log(data);
+                        console.log(userData.ava);
 
-                        let info = '<p class="text-dark-green text-base font-semibold">' + userData.name + '</p> <p class="text-light-green">Mentor System Analyst</p>';
-                        let inputMentor = '<input type="text" value="'+ userData.user_id +'" name="id_mentor" hidden>';
+                        let info = '<p class="text-dark-green text-base font-semibold">' + userData.user.name + '</p> <p class="text-light-green">Mentor System Analyst</p>';
+                        let inputMentor = '<input type="text" value="'+ userData.user.user_id +'" name="id_mentor" hidden>';
                         $('#infoUser').html(info);
                         $('#infoUser').append(inputMentor);
+
+                        $('#time').html('')
+                        userData.ava.forEach(e => $('#time').append(`<option value='` + e.start_time+ `' >` + e.start_time+ `</option>`)
+);
+
+
                     }
                 })
             }
