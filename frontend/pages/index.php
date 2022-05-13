@@ -8,7 +8,7 @@ $objUser->setEmail($_SESSION['user']);
 $orang = $objUser->getUserByEmail();
 
 if($_SESSION['role'] == 2){
-    header("location: http://localhost/websocket/web-chat-room/frontend/pages/mentor.php");
+    header("location: mentor_approve.php");
 }
 
 // get user
@@ -19,7 +19,7 @@ $lectures = $response['data'];
 
 
 if (!isset($_SESSION['user'])) {
-    header("location: login.php");
+    header("location: ../../login.php");
 }
 
 
@@ -236,7 +236,7 @@ $user = $objUser->getUserByEmail();
                     class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
                     <ul class="py-1 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownLargeButton">
                         <li>
-                            <a href="#"
+                            <a href="daftarRequest.php"
                                 class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Session</a>
                         </li>
                         <li>
@@ -348,7 +348,11 @@ $user = $objUser->getUserByEmail();
                                     </div>
                                 </div>
                                 <div>
-                                    <input type="text" hidden id="user_id" value="<?= $_SESSION['id'] ?>">
+                                    <!-- save student id -->
+                                    <input type="text" hidden name="studentId" id="student" value="<?= $_SESSION['id'] ?>">
+
+                                    <!-- save lecture -->
+                                    <input type="text" hidden name="lectureId" id="lecture" value="">
                                     <label for="text"
                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Topic</label>
                                     <textarea id="message" rows="4" name="topic"
@@ -403,7 +407,7 @@ $user = $objUser->getUserByEmail();
     <script>
         
             function bukaModal(id){
-                
+                $('#lecture').attr('value', id);
                 $.ajax({
                     method: "POST",
                     data: {
