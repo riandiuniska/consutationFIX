@@ -321,7 +321,7 @@ $user = $objUser->getUserByEmail();
                                 </div>
                                 <div>
                                     <label for="text"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Nama
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300 after:content-['*'] after:ml-0.5 after:text-red-500">Nama
                                         Lengkap</label>
                                     <input type="text" name="name" id="name"
                                         class="bg-gray-50 border border-gray-300 -mb-4 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
@@ -329,14 +329,17 @@ $user = $objUser->getUserByEmail();
                                 </div>
                                 <div>
                                     <label for="email"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Email</label>
-                                    <input type="email" name="email" id="email"
-                                        class="bg-gray-50 border border-gray-300 -mb-4 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                                        placeholder="Email" required>
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300  after:content-['*'] after:ml-0.5 after:text-red-500">Email</label>
+                                        <input type="email" name="email" id="email"
+                                        class="bg-gray-50 border border-gray-300 -mb-4 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white invalid:text-red-600 invalid:focus:ring-red-600 invalid:focus:border-red-600 peer"
+                                        placeholder="email@example.com">
+                                    <p class="mt-5 -mb-5 italic text-xs invisible peer-invalid:visible text-red-600">
+                                        Format alamat email tidak valid.
+                                    </p>
                                 </div>
                                 <div>
                                     <label for="text"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Waktu</label>
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300 after:content-['*'] after:ml-0.5 after:text-red-500">Waktu</label>
                                     <div class="timepicker relative form-floating mb-3 w-full"
                                         id="input-toggle-timepicker" data-mdb-toggle-button="false">
                                         <select name="time" id="time" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 -mb-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -354,7 +357,7 @@ $user = $objUser->getUserByEmail();
                                     <!-- save lecture -->
                                     <input type="text" hidden name="lectureId" id="lecture" value="">
                                     <label for="text"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Topic</label>
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300 after:content-['*'] after:ml-0.5 after:text-red-500">Topic</label>
                                     <textarea id="message" rows="4" name="topic"
                                         class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         placeholder="Leave a comment..."></textarea>

@@ -229,14 +229,14 @@ echo "<input type='hidden' name='userId' id='userId' value='" . $_SESSION['id'] 
 
             <div class="relative mb-7">
                 <!-- Countdown -->
-                <div class="absolute text-white right-[113px] bg-slate-500 py-2 px-4 rounded-2xl">
+                <!-- <div class="absolute text-white right-[113px] bg-slate-500 py-2 px-4 rounded-2xl">
                     <i class="mr-1 fas fa-clock"></i>
                     <span class="countdown font-mono text-sm">
                         <span style="--value:10;"></span>:
                         <span style="--value:24;"></span>:
                         <span style="--value:59;"></span>
                     </span>
-                </div>
+                </div> -->
                 <!-- End Session -->
                 <?php
                 
@@ -311,7 +311,7 @@ echo "<input type='hidden' name='userId' id='userId' value='" . $_SESSION['id'] 
                         <div class="flex gap-x-4 py-3 px-7">
                             <!-- <img class="w-14" src="Img/icons/default_profile.svg" alt="Profile Image"> -->
                             <div class="">
-                                <p class="flex py-4 text-dark-green text-base font-bold "> Bimbingan
+                                <p class="flex py-4 text-dark-green text-base font-bold" id="title-cons"> Bimbingan
                                 </p>
 
                             </div>
@@ -352,9 +352,9 @@ echo "<input type='hidden' name='userId' id='userId' value='" . $_SESSION['id'] 
                                                 <div class="w-full pb-2">
                                                     <div class="flex justify-between">
                                                         <span class="block ml-2 font-bold text-[#1e3f41]"><?= $group['group_name'] ?></span>
-                                                        <span class="block ml-2 text-sm text-gray-600">25 minutes</span>
+                                                        <!-- <span class="block ml-2 text-sm text-gray-600">25 minutes</span> -->
                                                     </div>
-                                                    <span class="block ml-2 text-sm text-gray-600">Lorem Ipsum Dolor sit...</span>
+                                                    <!-- <span class="block ml-2 text-sm text-gray-600">Lorem Ipsum Dolor sit...</span> -->
                                                 </div>
                                             </a>
 
@@ -426,6 +426,8 @@ echo "<input type='hidden' name='userId' id='userId' value='" . $_SESSION['id'] 
     <script>
         function requestChat(id, email, groupName) {
 
+            $('#title-cons').html(groupName);
+
             $('#idEnd').attr('value', id);
             // mengkosongkan halaman chat box
             $('#chat-container').html("");
@@ -457,11 +459,7 @@ echo "<input type='hidden' name='userId' id='userId' value='" . $_SESSION['id'] 
 
                         // console.log(z + "->" + message[e][z]['chat_id']);
                         let val = message[e];
-                        console.log(val['chat_id']);
-                        console.log(val['message']);
-                        console.log(val['name']);
-                        console.log(val['user_id']);
-                        console.log(isi.userId);
+              
 
                         // menambahkan chat yang telah difilter ke dalam halaman     
                         let styleBox = '';
@@ -470,7 +468,7 @@ echo "<input type='hidden' name='userId' id='userId' value='" . $_SESSION['id'] 
                             styleBox = 'bg-red-200 text-right ml-auto';
                             val['name'] = "Me";
                         } else {
-                            styleBox = 'bg-green-200 text-left';
+                            styleBox = 'bg-green-200 text-left mr-auto';
                         }
 
                         let contain = '<div class="max-w-fit ' + styleBox + ' rounded-xl px-4 py-2 ..."><small class="font-semibold">' + val['name'] +
@@ -498,15 +496,18 @@ echo "<input type='hidden' name='userId' id='userId' value='" . $_SESSION['id'] 
                         data = JSON.parse(e.data);
 
                         var styleBox = '';
+                        var styleBox2 = '';
 
                         if (data.from == "Me") {
-                            styleBox = 'relative max-w-xl min-w-[17%] px-4 py-2 text-gray-700 rounded-xl shadow bg-[#ddb07f]';
+                            styleBox = 'relative max-w-xl min-w-[17%] px-4 py-2 text-gray-700 rounded-xl shadow bg-red-200';
+                            styleBox2 = 'justify-end';
                         } else {
-                            styleBox = 'relative max-w-xl min-w-[17%] px-4 py-2 text-gray-700 bg-[#c4c4c4] rounded-xl shadow';
+                            styleBox = 'relative max-w-xl min-w-[17%] px-4 py-2 text-gray-700 bg-green-200 rounded-xl shadow';
+                            styleBox2 = 'justify-start';
                         }
 
                         if (data.group_id == id) {
-                            var box = `<li class="flex justify-end">
+                            var box = `<li class="flex `+ styleBox2+`">
                                             <div class="` + styleBox + `">
                                                 <p class="text-[#1e3f41] font-bold">` + data.from + `</p>
                                                 <span class="block text-justify">` + data.msg + `</span>
