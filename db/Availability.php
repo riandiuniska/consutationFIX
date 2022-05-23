@@ -65,7 +65,14 @@ class Availability {
     }
 
     public function getDataById($id){
-        $sql = $this->db_conn->prepare("select * from availability where mentor_id = $id");
+        $t = time();
+        $t1 = $t + 1296000;
+
+        $time = date("Y-m-d",$t);
+        $time2 = date("Y-m-d",$t1);
+        
+        $sql = $this->db_conn->prepare("select * from availability where mentor_id = $id and (start_time  
+        BETWEEN '$time%' AND '$time2%')");
 
         try{
             if($sql->execute()){

@@ -91,6 +91,8 @@ if ($_POST['status'] == 'active') {
             echo "email sending failed";
         }
 
+        header("location: http://localhost/websocket/web-chat-room/frontend/pages/mentor_approve.php");
+
     }
 
 }

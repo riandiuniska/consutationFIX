@@ -248,6 +248,18 @@ $dataAva = $objAva->getDataById($_SESSION['id']);
                     data-modal-toggle="defaultModal">Atur
                     jadwal</button>
             </div>
+
+            <?php
+            
+            if(isset($_GET['message']) and ($_GET['message'] = 'success')){
+                echo '<div class="p-4 mb-4 text-md text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800" role="alert">
+                        <span class="font-medium">Success alert!</span>
+                    </div>';
+            }
+            
+            ?>
+
+
             <div>
                 <table class="shadow-lg bg-white rounded-xl" style="width: 100%">
                     <colgroup>
@@ -335,10 +347,12 @@ $dataAva = $objAva->getDataById($_SESSION['id']);
                                 </div>
                                 <div class="text-center">
                                     <button type="submit" 
-                                        class=" items-center focus:outline-none border border-yellow-400 text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900">Accept</button>
+                                        class=" items-center focus:outline-none border border-yellow-400 text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900">Accept
+                                    </button>
 
                                     <button data-modal-toggle="defaultModal" type="button"
-                                        class="text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900">Cancel</button>
+                                        class="text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900">Cancel
+                                    </button>
                                 </div>
                           
                     </div>

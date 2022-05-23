@@ -256,7 +256,7 @@ $grp = new Groups;
                     </thead>
                     <tbody>
                         <?php foreach($acceptances as $acceptance){ ?>
-                            <tr class="status">
+                            <tr class="status" id="<?= $acceptance['acceptance_id'] ?>">
                                 <td class="border-b px-4 py-2"><?= $acceptance['name']; ?></td>
                                 <td class="border-b px-4 py-2 text-center"><?= $acceptance['time']; ?></td>
                                 <td class="border-b px-4 py-2 text-center"><?= $acceptance['topic']; ?></td>
@@ -320,6 +320,10 @@ $grp = new Groups;
                 }
             })
             }
+
+            let cont = "#"+id;
+            $(cont).last().html('');
+
 
         }
     </script>

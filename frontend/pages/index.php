@@ -199,6 +199,10 @@ $user = $objUser->getUserByEmail();
             </div>
         </div>
 
+        <?php
+
+        ?>
+
 
         <!-- Right side -->
         <div class="bg-cgray w-full h-screen px-10 py-6 flex flex-col gap-y-6 overflow-y-scroll">
@@ -246,17 +250,26 @@ $user = $objUser->getUserByEmail();
                     </ul>
                 </div>
             </div>
+            <?php
+                
+                if( isset($_GET['message']) and ($_GET['message'] == 'success')){
+                    echo '<div class="p-4 mb-4 text-md text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800" role="alert">
+                            <span class="font-medium">Berhasil Mengajukan Bimbingan
+                        </div>';
+                } elseif(isset($_GET['message']) and ($_GET['message'] == 'failed')){
+                    echo '<div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
+                    <span class="font-medium">Gagal Mengajukan Bimbingan
+                  </div>';
+                } else {
+                    
+                }
+
+            ?>
 
             <div class="grid justify-items-center gap-4 gap-y-[50px] grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 w-auto">
 
       
                 
- 
-
-                <?php
-                
-
-                ?>
 
                 <!-- card bimbingan -->
                 <?php foreach($lectures as $mentor){ ?>
@@ -325,14 +338,14 @@ $user = $objUser->getUserByEmail();
                                         Lengkap</label>
                                     <input type="text" name="name" id="name"
                                         class="bg-gray-50 border border-gray-300 -mb-4 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                                        placeholder="Nama Lengkap" required>
+                                        placeholder="Nama Lengkap" value="<?= $_SESSION['user'] ?>" required>
                                 </div>
                                 <div>
                                     <label for="email"
                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300  after:content-['*'] after:ml-0.5 after:text-red-500">Email</label>
                                         <input type="email" name="email" id="email"
                                         class="bg-gray-50 border border-gray-300 -mb-4 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white invalid:text-red-600 invalid:focus:ring-red-600 invalid:focus:border-red-600 peer"
-                                        placeholder="email@example.com">
+                                        placeholder="email@example.com" value="<?= $_SESSION['email'] ?>">
                                     <p class="mt-5 -mb-5 italic text-xs invisible peer-invalid:visible text-red-600">
                                         Format alamat email tidak valid.
                                     </p>
@@ -343,7 +356,7 @@ $user = $objUser->getUserByEmail();
                                     <div class="timepicker relative form-floating mb-3 w-full"
                                         id="input-toggle-timepicker" data-mdb-toggle-button="false">
                                         <select name="time" id="time" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 -mb-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-
+                
                                         </select>
                                         <!-- <input type="text" name="time" id="time"
                                             class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 -mb-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -364,7 +377,9 @@ $user = $objUser->getUserByEmail();
                                 </div>
                                 <div class="text-center">
                                     <button type="submit" name="submit" value="success"
-                                        class="items-center focus:outline text-white border-yellow-400 bg-yellow-500 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900">Submit</button>
+                                        class="items-center focus:outline text-white border-yellow-400 bg-yellow-500 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900">
+                                        Submit
+                                    </button>
 
                                     <button data-modal-toggle="defaultModal" type="button"
                                         class="text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900">Cancel</button>

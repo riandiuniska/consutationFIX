@@ -28,9 +28,10 @@ if(!empty($_POST['submit'])){
 
     if($objAcc->saveData()){
         echo 'berhasil disimpan';
-        header("Location: ../frontend/pages/index.php");
+        header("Location: ../frontend/pages/index.php?message=success");
     } else {
-        echo 'gagal simpan';
+        // echo 'gagal simpan';
+        header("Location: ../frontend/pages/index.php?message=failed");
     }
 }
 
