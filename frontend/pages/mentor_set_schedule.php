@@ -320,7 +320,7 @@ $dataAva = $objAva->getDataById($user->user_id);
                         </button>
                     </div>
                     <!-- Modal body -->
-                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                    <div class="relative bg-white rounded-lg dark:bg-gray-700">
                         <form class="mt-4 px-6 pb-4 space-y-6 lg:px-8 sm:pb-6 xl:pb-8" action="../../action/sendTime.php" method="post">
                             <h3 class="text-xl font-medium text-gray-900 text-center dark:text-white">Set Your
                                 Schedule</h3>
@@ -340,14 +340,14 @@ $dataAva = $objAva->getDataById($user->user_id);
                                 <label for="text" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Waktu
                                     Mulai</label>
                                 <div class="timepicker relative form-floating mb-3 w-full" id="input-toggle-timepicker" data-mdb-toggle-button="false">
-                                    <input type="datetime-local" step="0.001" name="timeStart" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 -mb-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select a time" />
+                                    <input type="datetime-local" step="0.001" name="timeStart" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 -mb-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select a time" required/>
                                 </div>
                             </div>
                             <div>
                                 <label for="text" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Waktu
                                     Selesai</label>
                                 <div class="timepicker relative form-floating mb-3 w-full" id="input-toggle-timepicker" data-mdb-toggle-button="false">
-                                    <input type="datetime-local" step="0.001" name="timeEnd" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 -mb-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select a time" />
+                                    <input type="datetime-local" step="0.001" name="timeEnd" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 -mb-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select a time" required/>
                                 </div>
                                 <input type="text" name="user_id" value="<?= $user->user_id ?>" hidden>
                             </div>
