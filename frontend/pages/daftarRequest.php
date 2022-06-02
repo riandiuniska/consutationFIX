@@ -2,14 +2,40 @@
 session_start();
 
 require '../../db/Acceptance.php';
+require "../../api/get_request.php";
 
-if($_SESSION['role'] == 2){
-    header("location: http://localhost/websocket/web-chat-room/frontend/pages/mentor.php");
+$loginPath = "../../login.php";
+if (!isset($_SESSION['user_data'])) {
+    header('location:' . $loginPath);
+}
+
+$user = $_SESSION['user_data']->user;
+
+switch ($_SESSION['user_data']->{'user'}->{'role_id'}) {
+        // KONDISI KETIKA USER MEMASUKI HALAMAN NAMUN LOGIN SEBAGAI ADMIN
+    case 1:
+        echo "
+        <script>
+
+            location.replace('admin.php');
+        </script>
+        ";
+        break;
+        // KONDISI KETIKA USER MEMASUKI HALAMAN NAMUN LOGIN SEBAGAI STUDENT
+    case 2:
+        echo "
+        <script>
+            location.replace('mentor.php');
+        </script>
+        ";
+        break;
+    default:
+        break;
 }
 
 // acceptance
 $objAccept = new Acceptance;
-$acception = $objAccept->getDataByIdStudent($_SESSION['id']);
+$acception = $objAccept->getDataByIdStudent($_SESSION['user_data']->user->user_id);
 // var_dump($acception);
 
 ?>
@@ -50,6 +76,23 @@ $acception = $objAccept->getDataByIdStudent($_SESSION['id']);
         }
     </script>
     <style>
+        .sidebar #username_logo {
+            display: none;
+        }
+
+        #profil_image {
+            display: none !important;
+        }
+
+        .responsive-top {
+            display: none;
+        }
+
+        .active {
+            color: #DDB07F !important;
+            border-bottom: solid 4px #DDB07F;
+        }
+
         .in-active {
             width: 80px !important;
             padding: 20px 15px !important;
@@ -77,127 +120,121 @@ $acception = $objAccept->getDataByIdStudent($_SESSION['id']);
         .sidebar {
             transition: .5s ease-in-out;
         }
+
+        @media screen and (max-width: 414px) {
+            .responsive-top {
+                display: block;
+            }
+
+            #profil_image {
+                display: flex !important;
+            }
+
+            .logo-smk {
+                display: none !important;
+            }
+
+            .assignment-table th,
+            .assignment-table td {
+                font-size: 9px;
+            }
+
+            .assignment-table img {
+                width: 45%;
+            }
+
+            .sidebar h2,
+            .sidebar h4,
+            .sidebar .logo-incareer,
+            .sidebar hr,
+            .sidebar #btnToggle {
+                display: none !important;
+            }
+
+            .sidebar #username_logo {
+                display: block;
+                margin: 0;
+            }
+
+            .breadcrumb ul {
+                font-size: .5rem;
+            }
+
+            .topic-title p {
+                font-size: 1.35rem;
+            }
+
+            .mentor-profile img {
+                width: 20%;
+            }
+
+            .mentor-profile p {
+                font-size: .5rem;
+            }
+
+            .direction p {
+                font-size: .5rem;
+            }
+
+            .tab-menu ul {
+                font-size: .6rem;
+            }
+
+            .in-active {
+                width: 80px !important;
+                padding: 10px 15px !important;
+                transition: .5s ease-in-out;
+            }
+
+
+            .sidebar {
+                position: absolute;
+                z-index: 1;
+            }
+
+            .rightbar {
+                margin-left: 80px;
+            }
+
+
+        }
     </style>
 
 </head>
 
 <body>
+    <div class="responsive-top p-5">
+        <div class="container flex flex-column justify-between mt-4 mb-4">
+            <img class="w-[150px] logo-smk1" src="../src/logo_lumintu.png" alt="Logo SMK">
+            <img src="Img/icons/toggle_icons.svg" alt="toggle_dashboard" class="w-8 cursor-pointer" id="btnToggle2">
+        </div>
+    </div>
     <div class="flex items-center">
         <!-- Left side (Sidebar) -->
-        <div class="bg-white w-[350px] h-screen px-8 py-6 flex flex-col justify-between sidebar in-active">
-            <!-- Top nav -->
-            <div class="flex flex-col gap-y-6">
-                <!-- Header -->
-                <div class="flex items-center space-x-4 px-2">
-                    <img src="Img/icons/toggle_icons.svg" alt="toggle_dashboard" class="w-8 cursor-pointer" id="btnToggle">
-                    <img class="w-[150px] logo-smk" src="../src/logofix.png" alt="Logo In Career">
-                </div>
-
-                <hr class="border-[1px] border-opacity-50 border-[#93BFC1]">
-
-                <!-- List Menus -->
-                <div>
-                    <ul class="flex flex-col gap-y-1">
-                        <li>
-                            <a href="#" class="flex items-center gap-x-4 h-[50px] rounded-xl px-4 hover:bg-cream text-dark-green hover:text-white">
-                                <img class="w-5" src="./Img/icons/home_icon.svg" alt="Dashboard Icon">
-                                <p class="font-semibold">Dashboard</p>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="flex items-center gap-x-4 h-[50px] rounded-xl px-4 hover:bg-cream text-dark-green hover:text-white">
-                                <img class="w-5" src="./Img/icons/course_icon.svg" alt="Course Icon">
-                                <p class="font-semibold">Course</p>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="flex items-center gap-x-4 h-[50px] rounded-xl px-4 hover:bg-cream text-dark-green hover:text-white">
-                                <img class="w-5" src="./Img/icons/discussion_icon.svg" alt="Forum Icon">
-                                <p class="font-semibold">Forum Dicussion</p>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="" class="flex items-center gap-x-4 h-[50px] rounded-xl px-4 hover:bg-cream text-dark-green hover:text-white">
-                                <img class="w-5" src="./Img/icons/schedule_icon.svg" alt="Schedule Icon">
-                                <p class="font-semibold">Schedule</p>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="" class="flex items-center gap-x-4 h-[50px] rounded-xl px-4 hover:bg-cream text-dark-green hover:text-white">
-                                <img class="w-5" src="./Img/icons/attendance_icon.svg" alt="Attendance Icon">
-                                <p class="font-semibold">Attendance</p>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="" class="flex items-center gap-x-4 h-[50px] rounded-xl px-4 hover:bg-cream text-dark-green hover:text-white">
-                                <img class="w-5" src="./Img/icons/score_icon.svg" alt="Score Icon">
-                                <p class="font-semibold">Score</p>
-                            </a>
-                        </li>
-                        <!-- Dropdown -->
-                        <li>
-                            <button type="button" class="flex items-center gap-x-4 h-[50px] w-full rounded-xl px-4 bg-cream text-base font-normal text-gray-900 transition duration-75 group " aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
-                                <img class="w-5" src="./Img/icons/consult_icon.svg" alt="Consult Icon">
-                                <span class="flex-1 text-left whitespace-nowrap text-white font-semibold" sidebar-toggle-item>Consult</span>
-                                <svg sidebar-toggle-item class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                                </svg>
-                            </button>
-                            <ul id="dropdown-example" class="hidden py-2 space-y-2">
-                                <li>
-                                    <a href="#" class=" text-cream  border-cream
-                                    flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Status</a>
-                                </li>
-                                <li>
-                                    <a href="index.php" class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Booking</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                        </li>
-                        <!-- End Dropdown -->
-                    </ul>
-                </div>
-            </div>
-            <!-- Bottom nav -->
-            <div>
-                <ul class="flex flex-col ">
-                    <li>
-                        <a href="#" class="flex items-center gap-x-4 h-[50px] rounded-xl px-4 hover:bg-cream text-dark-green hover:text-white">
-                            <img class="w-5" src="./Img/icons/help_icon.svg" alt="Help Icon">
-                            <p class="font-semibold">Help</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="../../logout.php" class="flex items-center gap-x-4 h-[50px] rounded-xl px-4 hover:bg-cream text-dark-green hover:text-white">
-                            <img class="w-5" src="./Img/icons/logout_icon.svg" alt="Log out Icon">
-                            <p class="font-semibold">Log out</p>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+        <?php
+        include 'partial/student/_sidebar.php';
+        ?>
 
 
         <!-- Right side -->
-        <div class="bg-cgray w-full h-screen px-10 py-6 flex flex-col gap-y-6 overflow-y-scroll">
+        <div class="bg-cgray w-full h-screen px-10 py-6 flex flex-col gap-y-6 overflow-y-scroll rightba">
             <!-- Header / Profile -->
             <div class="flex items-center gap-x-4 justify-end">
                 <img class="w-10" src="./Img/icons/default_profile.svg" alt="Profile Image">
-                <p class="text-dark-green font-semibold"><?= $_SESSION['user'] ?></p>
+                <p class="text-dark-green font-semibold"><?= $user->user_username ?></p>
             </div>
 
             <!-- Breadcrumb -->
             <div>
                 <ul class="flex items-center gap-x-4">
                     <li>
-                        <a class="text-light-green" href="#">Home</a>
+                        <a class="text-light-green" href="#">Beranda</a>
                     </li>
                     <li>
                         <span class="text-light-green">/</span>
                     </li>
                     <li>
-                        <a class="text-light-green" href="#">Consult</a>
+                        <a class="text-light-green" href="#">Konsultasi</a>
                     </li>
                     <li>
                         <span class="text-light-green">/</span>
@@ -212,7 +249,9 @@ $acception = $objAccept->getDataByIdStudent($_SESSION['id']);
                     <li class="text-dark-green text-cream border-b-4 border-cream h-[50px] flex items-center font-semibold  cursor-pointer">
                         <p>Status</p>
                     </li>
-                    <a href="index.php"><li class="text-dark-green hover:text-cream hover:border-b-4 hover:border-cream h-[50px] flex items-center font-semibold  cursor-pointer">Booking</li></a>
+                    <a href="index.php">
+                        <li class="text-dark-green hover:text-cream hover:border-b-4 hover:border-cream h-[50px] flex items-center font-semibold  cursor-pointer">Booking</li>
+                    </a>
                 </ul>
             </div>
 
@@ -234,46 +273,54 @@ $acception = $objAccept->getDataByIdStudent($_SESSION['id']);
                             <th class="border-b text-left px-4 py-2">Nama Mentor</th>
                             <th class="border-b text-center px-4 py-2">Tanggal</th>
                             <th class="border-b text-center px-4 py-2">Jam</th>
-                            <th class="border-b text-center px-4 py-2">Status</th> 
+                            <th class="border-b text-center px-4 py-2">Status</th>
                             <th class="border-b text-center px-4 py-2">Keterangan</th>
                     </thead>
                     <tbody>
 
-                        <?php foreach($acception as $key) : ?>
+                        <?php foreach ($acception as $key) : ?>
                             <tr>
-                                <?php 
-                                
-                                    $time = explode(' ', $key['time']);
+                                <?php
 
-                                    $date = $time[0];
+                                $time = explode(' ', $key['time']);
 
-                                    $clock = $time[1];
-                                    
-                                ?>
+                                $date = $time[0];
 
-                                <?php 
-                                
-                                $response = json_decode(file_get_contents('https://i0ifhnk0.directus.app/items/user?filter={"user_id":"' .$key['user_id'].'"}'), true);
+                                $clock = $time[1];
 
                                 ?>
 
-                                <td class="border-b px-4 py-2"><?= $response['data'][0]['user_username'] ?></td>
+                                <?php
+
+                                $token = $_COOKIE['X-LUMINTU-REFRESHTOKEN'];
+                                $users = (json_decode(http_request_with_auth("https://account.lumintulogic.com/api/users.php", $token))->{'user'});
+
+                                for ($i = 0; $i < count($users); $i++) {
+                                    if ($users[$i]->user_id == $key['user_id']) {
+                                        $name = $users[$i]->user_username;
+                                        break;
+                                    }
+                                }
+
+                                ?>
+
+                                <td class="border-b px-4 py-2"><?= $name ?></td>
                                 <td class="border-b px-4 py-2 text-center"><?= $date ?></td>
                                 <td class="border-b px-4 py-2 text-center"><?= $clock ?></td>
                                 <td class="border-b px-4 py-2 text-center">
-                                    <?php if($key['status'] == 'reject'){ ?>
+                                    <?php if ($key['status'] == 'reject') { ?>
                                         <div class="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 rounded-lg text-sm flex text-center py-2 px-4 w-3/4 mx-auto">
-                                        <div class="ml-5 text-red-500 bg-red-100 rounded-lg dark:bg-red-800 dark:text-red-200 rounded-lg">
-                                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z">
-                                                </path>
-                                            </svg>
+                                            <div class="ml-5 text-red-500 bg-red-100 rounded-lg dark:bg-red-800 dark:text-red-200 rounded-lg">
+                                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z">
+                                                    </path>
+                                                </svg>
+                                            </div>
+                                            <div class="ml-6 text-sm font-medium text-white">
+                                                Reject
+                                            </div>
                                         </div>
-                                        <div class="ml-6 text-sm font-medium text-white">
-                                            Reject
-                                        </div>
-                                    </div>
-                                    <?php }else if($key['status'] == 'active') { ?>
+                                    <?php } else if ($key['status'] == 'active') { ?>
                                         <div class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 rounded-lg text-sm flex text-center py-2 px-4 w-3/4 mx-auto">
                                             <div class="ml-5 text-green-500 bg-green-100 rounded-lg">
                                                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -284,15 +331,15 @@ $acception = $objAccept->getDataByIdStudent($_SESSION['id']);
                                             <div class="ml-6 text-sm font-medium text-white">Approved
                                             </div>
                                         </div>
-                                    <?php }else { ?>
+                                    <?php } else { ?>
                                         disable
                                     <?php } ?>
 
                                 </td>
                                 <td class="border-b px-4 py-2 text-center">
-                                    <?php if($key['status'] == 'active'){ ?>
-                                        <button type="button" class="px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Konsultasi</button>
-                                    <?php } else {?>
+                                    <?php if ($key['status'] == 'active') { ?>
+                                        <a href="./../../group_chat.php"><button type="button" class="px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Konsultasi</button></a>
+                                    <?php } else { ?>
                                         <p>-</p>
                                     <?php } ?>
                                 </td>

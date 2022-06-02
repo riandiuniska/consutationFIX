@@ -92,7 +92,7 @@ class Chats {
 
     // Get Chat by Group_id
     public function getChatByGroup($group_id){
-        $statement = $this->db_conn->prepare("SELECT * FROM chats INNER JOIN users ON chats.user_id = users.user_id WHERE group_id = :group_id ");
+        $statement = $this->db_conn->prepare("SELECT * FROM chats WHERE group_id = :group_id ");
         $statement->bindParam(":group_id", $group_id);
         $statement->execute();
         $chatsData = $statement->fetchAll(PDO::FETCH_ASSOC);

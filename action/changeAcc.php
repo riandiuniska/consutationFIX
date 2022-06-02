@@ -70,7 +70,6 @@ if ($_POST['status'] == 'active') {
                 $objPriv = new Privillage;
                 
                 $objPriv->savePrivillage($latestId, $userId);
-
                 $objPriv->savePrivillage($latestId, $studentId);
 
 
@@ -108,7 +107,6 @@ if ($_POST['status'] == 'reject') {
         echo "email sending failed";
     }
 }
-
 
 
 ?>

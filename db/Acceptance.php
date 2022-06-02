@@ -143,8 +143,8 @@ class Acceptance{
         return $data;
     }
 
-    public function getNotApprove(){
-        $statement = $this->db_conn->prepare("SELECT * FROM acceptance where status = 'disable'");
+    public function getNotApprove($user_id){
+        $statement = $this->db_conn->prepare("SELECT * FROM acceptance where status = 'disable' and user_id = $user_id");
 
         $statement->execute();
         $data = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -152,8 +152,8 @@ class Acceptance{
         return $data;
     }
 
-    public function getApprove(){
-        $statement = $this->db_conn->prepare("SELECT * FROM acceptance where not status = 'disable'");
+    public function getApprove($user_id){
+        $statement = $this->db_conn->prepare("SELECT * FROM acceptance where not status = 'disable' and user_id = $user_id");
 
         $statement->execute();
         $data = $statement->fetchAll(PDO::FETCH_ASSOC);

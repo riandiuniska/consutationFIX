@@ -1,8 +1,30 @@
 <?php
 
-session_start();
 require("db/Users.php");
 require("db/Chats.php");
+
+session_start();
+
+$user = $_SESSION['user_data']->user;
+
+if(!isset($_SESSION['user_data'])){
+    header("location: login.php");
+}
+
+
+
+$loginPath = "login.php";
+if (!isset($_COOKIE['X-LUMINTU-REFRESHTOKEN'])) {
+    unset($_SESSION['user_data']);
+    header("location: " . $loginPath);
+}
+if (!isset($_SESSION['user_data'])) {
+    header("location: " . $loginPath);
+}
+
+$user = $_SESSION['user_data']->user;
+
+
 
 if (isset($_POST['endChat'])) {
     // echo $_POST['idEnd'];
@@ -22,23 +44,9 @@ if (isset($_POST['endChat'])) {
 }
 
 
-if (!isset($_SESSION['user'])) {
-    header("location: login.php");
-}
+// $response = json_decode(file_get_contents('https://i0ifhnk0.directus.app/items/user?filter={"user_email":"' . $email . '"}'), true);
 
-// var_dump($_SESSION['user']);
-
-$email = $_SESSION['email'];
-
-$objUser = new Users;
-$objUser->setEmail($_SESSION['user']);
-$user = $objUser->getUserByEmail();
-
-$response = json_decode(file_get_contents('https://i0ifhnk0.directus.app/items/user?filter={"user_email":"' . $email . '"}'), true);
-// var_dump($_SESSION['role']);
-
-
-echo "<input type='hidden' name='userId' id='userId' value='" . $_SESSION['id'] . "'>";
+echo "<input type='hidden' name='userId' id='userId' value='" . $user->user_id . "'>";
 
 
 ?>
@@ -123,95 +131,9 @@ echo "<input type='hidden' name='userId' id='userId' value='" . $_SESSION['id'] 
 <body class="overflow-hidden">
     <div class="flex items-center">
         <!-- Left side (Sidebar) -->
-        <div class="bg-white w-[350px] h-screen px-8 py-6 flex flex-col justify-between sidebar in-active">
-            <!-- Top nav -->
-            <div class="flex flex-col gap-y-6">
-                <!-- Header -->
-                <div class="flex items-center space-x-4 px-2">
-                    <img src="Img/icons/toggle_icons.svg" alt="toggle_dashboard" class="w-8 cursor-pointer" id="btnToggle">
-                    <img class="w-[150px] logo-smk" src="img/logo/logofix.png" alt="Logo In Career">
-                </div>
-
-                <hr class="border-[1px] border-opacity-50 border-[#93BFC1]">
-
-                <!-- List Menus -->
-                <div>
-                    <ul class="flex flex-col gap-y-1">
-                        <li>
-                            <a href="#" class="flex items-center gap-x-4 h-[50px] rounded-xl px-4 hover:bg-cream text-dark-green hover:text-white">
-                                <img class="w-5" src="Img/icons/home_icon.svg" alt="Dashboard Icon">
-                                <p class="font-semibold">Dashboard</p>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="flex items-center gap-x-4 h-[50px] rounded-xl px-4 hover:bg-cream text-dark-green hover:text-white">
-                                <img class="w-5" src="Img/icons/course_icon.svg" alt="Course Icon">
-                                <p class="font-semibold">Course</p>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="flex items-center gap-x-4 h-[50px] rounded-xl px-4 hover:bg-cream text-dark-green hover:text-white">
-                                <img class="w-5" src="Img/icons/discussion_icon.svg" alt="Forum Icon">
-                                <p class="font-semibold">Forum Dicussion</p>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="" class="flex items-center gap-x-4 h-[50px] rounded-xl px-4 hover:bg-cream text-dark-green hover:text-white">
-                                <img class="w-5" src="Img/icons/schedule_icon.svg" alt="Schedule Icon">
-                                <p class="font-semibold">Schedule</p>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="" class="flex items-center gap-x-4 h-[50px] rounded-xl px-4 hover:bg-cream text-dark-green hover:text-white">
-                                <img class="w-5" src="Img/icons/attendance_icon.svg" alt="Attendance Icon">
-                                <p class="font-semibold">Attendance</p>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="" class="flex items-center gap-x-4 h-[50px] rounded-xl px-4 hover:bg-cream text-dark-green hover:text-white">
-                                <img class="w-5" src="Img/icons/score_icon.svg" alt="Score Icon">
-                                <p class="font-semibold">Score</p>
-                            </a>
-                        </li>
-                        <li>
-                            <button type="button" class="flex items-center gap-x-4 h-[50px] w-full rounded-xl px-4 bg-cream text-base font-normal text-gray-900 transition duration-75 group " aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
-                                <img class="w-5" src="Img/icons/consult_icon.svg" alt="Consult Icon">
-                                <span class="flex-1 text-left whitespace-nowrap text-white font-semibold" sidebar-toggle-item>Consult</span>
-                                <svg sidebar-toggle-item class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                                </svg>
-                            </button>
-                            <ul id="dropdown-example" class="hidden py-2 space-y-2">
-                                <li>
-                                    <a href="murid/daftarRequest.php" class="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Status</a>
-                                </li>
-                                <li>
-                                    <a href="murid/bookingMentor.php" class="border-cream flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Booking</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Bottom nav -->
-            <div>
-                <ul class="flex flex-col ">
-                    <li>
-                        <a href="#" class="flex items-center gap-x-4 h-[50px] rounded-xl px-4 hover:bg-cream text-dark-green hover:text-white">
-                            <img class="w-5" src="Img/icons/help_icon.svg" alt="Help Icon">
-                            <p class="font-semibold">Help</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="logout.php" class="flex items-center gap-x-4 h-[50px] rounded-xl px-4 hover:bg-cream text-dark-green hover:text-white">
-                            <img class="w-5" src="Img/icons/logout_icon.svg" alt="Log out Icon">
-                            <p class="font-semibold">Log out</p>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+        <?php
+            include 'frontend/pages/partial/_sidebar.php';
+        ?>
 
 
         <!-- Right side -->
@@ -219,7 +141,7 @@ echo "<input type='hidden' name='userId' id='userId' value='" . $_SESSION['id'] 
             <!-- Header / Profile -->
             <div class="flex items-center gap-x-4 justify-end">
                 <img class="w-10" src="Img/icons/default_profile.svg" alt="Profile Image">
-                <p class="text-dark-green font-semibold"><?= $_SESSION['user'] ?></p>
+                <p class="text-dark-green font-semibold"><?= $user->user_username ?></p>
             </div>
 
             <div>
@@ -240,7 +162,7 @@ echo "<input type='hidden' name='userId' id='userId' value='" . $_SESSION['id'] 
                 <!-- End Session -->
                 <?php
                 
-                if($_SESSION['id'] == 2){
+                if($user->role_id == 2){
                    echo '<div class="absolute right-[0px]">
                     <button class="py-2 pb-3 px-4 text-sm font-medium first-line:text-center text-white bg-yellow-600 rounded-2xl hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-200" type="button" data-modal-toggle="deleteSes">
                         End Session 
@@ -332,7 +254,7 @@ echo "<input type='hidden' name='userId' id='userId' value='" . $_SESSION['id'] 
                                     <?php
                                     require "./db/Groups.php";
                                     $objGroup = new Groups;
-                                    $groups = $objGroup->filterGroup($_SESSION['id']);
+                                    $groups = $objGroup->filterGroup($user->user_id);
 
 
                                     if (count($groups) > 0) {
@@ -347,7 +269,7 @@ echo "<input type='hidden' name='userId' id='userId' value='" . $_SESSION['id'] 
                                             ?>
 
 
-                                            <a onclick="requestChat(<?= $group['group_id'] ?> , '<?= $email ?>', '<?= $group['group_name'] ?>' )" class="flex items-center px-3 py-2 text-sm transition duration-150 ease-in-out border-b border-gray-300 cursor-pointer hover:bg-gray-100 focus:outline-none rounded-t-xl">
+                                            <a onclick="requestChat(<?= $group['group_id'] ?> , '<?= $user->user_email ?>', '<?= $group['group_name'] ?>' )" class="flex items-center px-3 py-2 text-sm transition duration-150 ease-in-out border-b border-gray-300 cursor-pointer hover:bg-gray-100 focus:outline-none rounded-t-xl">
                                                 <img class="object-cover w-11 h-12 rounded-full" src="Img/icons/default_profile.svg" alt="Profile Image">
                                                 <div class="w-full pb-2">
                                                     <div class="flex justify-between">
@@ -466,12 +388,12 @@ echo "<input type='hidden' name='userId' id='userId' value='" . $_SESSION['id'] 
 
                         if (val['user_id'] == isi.userId) {
                             styleBox = 'bg-red-200 text-right ml-auto';
-                            val['name'] = "Me";
+                            val['username'] = "Me";
                         } else {
                             styleBox = 'bg-green-200 text-left mr-auto';
                         }
 
-                        let contain = '<div class="max-w-fit ' + styleBox + ' rounded-xl px-4 py-2 ..."><small class="font-semibold">' + val['name'] +
+                        let contain = '<div class="max-w-fit ' + styleBox + ' rounded-xl px-4 py-2 ..."><small class="font-semibold">' + val['username'] +
                             '</small><p class="">' + val['message'] +
                             '</p><p class="text-right text-xs text-gray-400 ">' + val['created_at'] +
                             '</p></div>';

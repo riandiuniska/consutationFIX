@@ -1,63 +1,46 @@
-<?php 
+<?php
+
+require_once "./api/get_request.php";
+require_once "./api/post_request.php";
+
 session_start();
-require "./db/Users.php";
 
-// Session check
-if(isset($_SESSION['user'])) {
-    header("location: ./");
-}
+if (isset($_POST['login'])) {
+    $arr = array(
+        "email" => $_POST['email'],
+        "password" => $_POST['password']
+    );
 
-if(isset($_POST['login'])) {
-    $loginResponse['is_ok'] = true;
+    $login = json_decode(post_request("https://account.lumintulogic.com/api/login.php", json_encode($arr)));
+    var_dump($login);
+    $access_token = $login->{'data'}->{'accessToken'};
+    $expiry = $login->{'data'}->{'expiry'};
 
-    $loginResponse['msg'] = 'login success';
+    if ($login->{'success'}) {
+        $userData = json_decode(http_request_with_auth("https://account.lumintulogic.com/api/user.php", $access_token));
+        $_SESSION['user_data'] = $userData;
+        $_SESSION['expiry'] = $expiry;
+        setcookie('X-LUMINTU-REFRESHTOKEN', $access_token, strtotime($expiry));
 
-    if($loginResponse['is_ok']) {
-
-        // panggil api, untuk mendapatkan data user
-
-        $email = $_POST['email'];
-        // var_dump($email);
-
-        // abbil data dari rest API
-        $response = json_decode(file_get_contents('https://i0ifhnk0.directus.app/items/user?filter={"user_email":"' .$email.'"}'), true);
-        // var_dump($response);
-
-        $userRespon = $response['data'];
-        var_dump($userRespon[0]['user_email']);
-        
-
-        if(!empty($userRespon)){
-            // var_dump($userRespon);
-
-            // validate pw
-            if ($userRespon[0]['user_password'] == $_POST['password']){
-                echo 'success';
-                $_SESSION['email'] = $_POST['email'];
-                $_SESSION['user'] = $userRespon[0]['user_username'];
-                $_SESSION['role'] = $userRespon[0]['role_id'];
-                $_SESSION['id'] = $userRespon[0]['user_id'];
-                // var_dump($_SESSION);
-                $_SESSION['status'] = "login";
-
-                if($_SESSION['role'] == 3) {
-                    header('locaction: http://localhost/websocket/web-chat-room/frontend/pages/mentor_set_schedule.php');
-                } 
-
-                if($_SESSION['role'] == 2) {
-                    header('locaction: http://localhost/websocket/web-chat-room/frontend/pages/');
-                }  
-
-                header('location: frontend/pages');
-            }else {
-                echo 'password tidak tepat';
-            }
-
-            
-        }else{
-            echo 'login failed';
+        switch ($userData->{'user'}->{'role_id'}) {
+            case 1:
+                // Admin
+                break;
+            case 2:
+                // Mentor
+                // var_dump($_SESSION['user_data']->{'user'}->{'role_id'});
+                header("location: ./frontend/pages/mentor.php");
+                break;
+            case 3:
+                // Student
+                header("location: ./frontend/pages/");
+                break;
+            default:
+                break;
         }
 
+        // var_dump($_SESSION['user_data']);
+        // var_dump($_COOKIE['X-LUMINTU-REFRESHTOKEN']);
     }
 }
 
@@ -66,39 +49,28 @@ if(isset($_POST['login'])) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
+    <title>Document</title>
 
-    <!-- Tailwindcss -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 
-    <!-- Jquery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.slim.js" integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY=" crossorigin="anonymous"></script>
 </head>
-<body>
-    <div class="w-10/12 sm:w-8/12 md:w-6/12 lg:w-5/12 xl:w-4/12 max-h-max mx-auto shadow-lg shadow-gray-200 rounded-lg border p-10 mt-10">
-        <img class="h-20 w-20 mx-auto" src="./img/icons/login.svg" alt="Login Icon">
-        <h1 class="text-center font-semibold">Login User</h1>
 
-        <!-- Form login user -->
-        <form class="mt-8 flex flex-col gap-y-4" action="" method="POST">
-            <div class="flex flex-col">
-                <label class="text-sm" for="email">Email</label>
-                <input class="h-10 pl-2 outline-none border border-gray-200 rounded-lg focus:border-blue-500" type="email" name="email" id="email">
-            </div>
-            <div class="flex flex-col">
-                <label class="text-sm" for="password">Password</label>
-                <input class="h-10 pl-2 outline-none border border-gray-200 rounded-lg focus:border-blue-500" type="password" name="password" id="password">
-            </div>
-            <button class="bg-blue-500 hover:bg-blue-600 w-full py-2 rounded-lg text-white font-semibold" type="submit" name="login">Login</button>
-        </form>
-        <div class="flex flex-col text-center mt-5">
-            <p>Don't have an account yet?</p>
-            <a class="text-blue-500 font-semibold hover:text-blue-600" href="./register.php">Sign up</a>
-        </div>
-    </div>
+<body>
+    <form action="" method="POST">
+        <label for="email">Email: </label>
+        <input type="text" name="email" id="email">
+        <br>
+        <label for="password">Password: </label>
+        <input type="text" name="password" id="password">
+        <br>
+        <button type="submit" id="login" name="login">Login</button>
+    </form>
+
 </body>
+
 </html>
