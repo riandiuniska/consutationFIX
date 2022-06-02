@@ -59,6 +59,11 @@ $acception = $objAccept->getDataByIdStudent($_SESSION['user_data']->user->user_i
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://unpkg.com/flowbite@1.4.2/dist/flowbite.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tw-elements/dist/css/index.min.css" />
+
+    <!-- Intro.JS -->
+    <link rel="stylesheet" href="https://unpkg.com/intro.js/minified/introjs.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/intro.js/themes/introjs-modern.css" />
+
     <script>
         tailwind.config = {
             theme: {
@@ -260,7 +265,7 @@ $acception = $objAccept->getDataByIdStudent($_SESSION['user_data']->user->user_i
                 <p class="text-3xl text-dark-green font-semibold">Detail Permohonan</p>
             </div>
 
-            <div>
+            <div class="table-status">
                 <table class="shadow-lg bg-white rounded-xl" style="width: 100%">
                     <colgroup>
                         <col span="1" style="width: 10%">
@@ -339,7 +344,7 @@ $acception = $objAccept->getDataByIdStudent($_SESSION['user_data']->user->user_i
                                 </td>
                                 <td class="border-b px-4 py-2 text-center">
                                     <?php if ($key['status'] == 'active') { ?>
-                                        <a href="./../../group_chat.php"><button type="button" class="px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Konsultasi</button></a>
+                                        <a href="./../../group_chat.php"><button type="button" class="button-konsultasi px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Konsultasi</button></a>
                                     <?php } else { ?>
                                         <p>-</p>
                                     <?php } ?>
@@ -368,6 +373,87 @@ $acception = $objAccept->getDataByIdStudent($_SESSION['user_data']->user->user_i
     </div>
     </div>
     </div>
+
+    <script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+
+    <script>
+        const intro = introJs();
+
+        intro.setOptions({
+            steps: [{
+                    title: 'Selamat Datang',
+                    intro: 'Hallo Codetion👋'
+                },
+                {
+                    title: 'Status',
+                    element: document.querySelector('.table-status'),
+                    intro: 'Cek status bimbingan mu disini </br> </br> Jika disetujui, anda bisa langsung melakukan konsultasi dengan mentor.'
+                },
+                {
+                    title: 'Tombol Konsultasi',
+                    element: document.querySelector('.button-konsultasi'),
+                    intro: 'Anda bisa memulai konsultasi dengan menekan tombol konsultasi ini.'
+                },
+                {
+                    title: 'Bantuan',
+                    element: document.querySelector('.help'),
+                    intro: 'Jika anda masih bingung, tombol ini bisa membantu anda untuk <b>mengulangi tutorial<b>.'
+                }
+
+            ],
+            showProgress: true,
+            showBullets: false,
+            disableInteraction: true,
+            showStepNumbers: true
+        })
+
+
+        var name = 'IntroJS';
+        var value = localStorage.getItem(name) || $.cookie(name);
+        var func = function() {
+            if (Modernizr.localstorage) {
+                localStorage.setItem(name, 1)
+            } else {
+                $.cookie(name, 1, {
+                    expires: 365
+                });
+            }
+        };
+        if (value == null) {
+            intro.start().oncomplete(func).onexit(func);
+        };
+    </script>
+
+    <!-- Intro.JS Student -->
+    <script>
+        function tutorial() {
+            introJs().setOptions({
+                steps: [{
+                        title: 'Selamat Datang',
+                        intro: 'Hallo Codetion👋'
+                    },
+                    {
+                        title: 'Status',
+                        element: document.querySelector('.table-status'),
+                        intro: 'Cek status bimbingan mu disini </br> </br> Jika disetujui, anda bisa langsung melakukan konsultasi dengan mentor.'
+                    },
+                    {
+                        title: 'Tombol Konsultasi',
+                        element: document.querySelector('.button-konsultasi'),
+                        intro: 'Anda bisa memulai konsultasi dengan menekan tombol konsultasi ini.'
+                    }
+
+                ],
+                showProgress: true,
+                showBullets: false,
+                disableInteraction: true,
+                showStepNumbers: true
+            }).start()
+        };
+    </script>
 
     <script src="https://unpkg.com/flowbite@1.4.2/dist/flowbite.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/index.min.js"></script>
