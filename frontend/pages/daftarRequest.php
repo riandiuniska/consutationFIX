@@ -48,6 +48,7 @@ $acception = $objAccept->getDataByIdStudent($_SESSION['user_data']->user->user_i
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Assignment Page</title>
+    <link href="Img/icons/logo_lumintu1.ico" rel='icon' />
 
     <!-- Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -217,7 +218,7 @@ $acception = $objAccept->getDataByIdStudent($_SESSION['user_data']->user->user_i
 
 
         <!-- Right side -->
-        <div class="bg-cgray w-full h-screen px-10 py-6 flex flex-col gap-y-6 overflow-y-scroll rightba">
+        <div class="bg-cgray w-full h-screen px-10 py-6 flex flex-col gap-y-6 overflow-y-scroll rightbar">
             <!-- Header / Profile -->
             <div class="flex items-center gap-x-4 justify-end">
                 <img class="w-10" src="./Img/icons/default_profile.svg" alt="Profile Image">
@@ -374,6 +375,9 @@ $acception = $objAccept->getDataByIdStudent($_SESSION['user_data']->user->user_i
         let btnToggle = document.getElementById('btnToggle');
         let sidebar = document.querySelector('.sidebar');
         btnToggle.onclick = function() {
+            sidebar.classList.toggle('in-active');
+        }
+        btnToggle2.onclick = function() {
             sidebar.classList.toggle('in-active');
         }
     </script>
