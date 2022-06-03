@@ -316,7 +316,7 @@ $acception = $objAccept->getDataByIdStudent($_SESSION['user_data']->user->user_i
                                 <td class="border-b px-4 py-2 text-center">
                                     <?php if ($key['status'] == 'reject') { ?>
                                         <div class="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 rounded-lg text-sm flex text-center py-2 px-4 w-3/4 mx-auto">
-                                            <div class="ml-5 text-red-500 bg-red-100 rounded-lg dark:bg-red-800 dark:text-red-200 rounded-lg">
+                                            <div class="ml-5 text-red-500 bg-red-100  dark:bg-red-800 dark:text-red-200 rounded-lg">
                                                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z">
                                                     </path>
@@ -326,6 +326,7 @@ $acception = $objAccept->getDataByIdStudent($_SESSION['user_data']->user->user_i
                                                 Reject
                                             </div>
                                         </div>
+                                        <DIV></DIV>
                                     <?php } else if ($key['status'] == 'active') { ?>
                                         <div class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 rounded-lg text-sm flex text-center py-2 px-4 w-3/4 mx-auto">
                                             <div class="ml-5 text-green-500 bg-green-100 rounded-lg">
