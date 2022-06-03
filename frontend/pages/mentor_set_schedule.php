@@ -333,7 +333,7 @@ $dataAva = $objAva->getDataById($user->user_id);
                                     </p>
                                     <p class="text-light-green">Mentor System Analyst</p>
                                 </div>
-                            </div>
+                            </div>  
 
 
                             <div>
